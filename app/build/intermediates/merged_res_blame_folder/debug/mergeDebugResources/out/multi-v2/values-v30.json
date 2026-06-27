@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.ezcanvas.demo.app-mergeDebugResources-39:/values-v30/values-v30.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Rotem\\.gradle\\caches\\9.3.1\\transforms\\522a29846aebfc6dde7bf45b45928239\\workspace\\transformed\\material3\\res\\values-v30\\values-v30.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "72",
+                        "endOffsets": "123"
+                    }
+                }
+            ]
+        }
+    ]
+}

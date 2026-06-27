@@ -1,0 +1,8 @@
+com.ezcanvas-pngs-0 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\generated\res\pngs\debug
+com.ezcanvas-updated_navigation_xml-1 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\generated\updated_navigation_xml\debug
+com.ezcanvas-mergeDebugResources-2 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.ezcanvas-mergeDebugResources-3 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.ezcanvas-debug-4 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_res\debug\mergeDebugResources
+com.ezcanvas-debug-5 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\packaged_res\debug\packageDebugResources
+com.ezcanvas-debug-6 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\src\debug\res
+com.ezcanvas-main-7 C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\src\main\res

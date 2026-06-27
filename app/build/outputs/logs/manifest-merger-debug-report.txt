@@ -1,0 +1,406 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:2:1-22:12
+MERGED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-21:12
+MERGED from [androidx.compose.animation:animation-core-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2f3a906367ee39ca683c75f29e60f4fa\workspace\transformed\animation-core\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\ce1364e3712ec288d342cf57f6821f65\workspace\transformed\material-ripple\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9f3adcacc33b2bcd7a9f5a3b953384ba\workspace\transformed\animation\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2fb09ce62d0966d6987d07c2d9352f08\workspace\transformed\foundation-layout\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c3d7b6ef7e35292b7b406ec205f382c\workspace\transformed\ui-tooling-data\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5b5d0d893522e59b8b6989a05a320ec2\workspace\transformed\ui-unit\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bed9a1d68cd7a029ea22978b7903c42d\workspace\transformed\ui-geometry\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\735f14c4b0a35528995ec8ad3e41a593\workspace\transformed\ui-util\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5e8ebd5489e0d44e32e880e545f922ac\workspace\transformed\ui-text\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\dbf9f1a3a485ed9ab495627a882fbd39\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\cee56c10c774484f2d0258b08f1a22ef\workspace\transformed\ui-graphics\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.material3:material3-android:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\522a29846aebfc6dde7bf45b45928239\workspace\transformed\material3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.foundation:foundation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\675bfb53d138753e4e01f6572836a561\workspace\transformed\foundation\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigationevent:navigationevent-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\26f2dcf18b7f59d665e6a228ad69da3f\workspace\transformed\navigationevent\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigationevent:navigationevent-compose-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6241da734be4c31f1aefdf10b8ac9437\workspace\transformed\navigationevent-compose\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bfa2ec3eb465eafc57787bfa2bc6470d\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3ca03e579cea2fc8eb0aeeda652d8906\workspace\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b48b36294147f17678eacdb9cd16e1e7\workspace\transformed\ui\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:17:1-29:12
+MERGED from [androidx.activity:activity-ktx:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\33ac65d09a8a83bd5219dba23badeaa3\workspace\transformed\activity-ktx-1.13.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\85fd45101c84b81e8015b689bedc08e6\workspace\transformed\activity-1.13.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-compose:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\68d4999d0f56edc9c5e677d5829499e2\workspace\transformed\activity-compose-1.13.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\206aa5f37b78829b1ee8e22da29c9140\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.6.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\559c1a73906ebc13a6ba7fbc6d6e46c6\workspace\transformed\transition-1.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.window:window-core-android:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b5136a4885d570e0269f105ca2a3e518\workspace\transformed\window-core\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\41b66a82dedbeb124888af7048f1b1a1\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\84e6b1ac4cecd1e1cf7d7dd0c46503d0\workspace\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\94f8589c55ab7aafd4c3b34df847c037\workspace\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\13f4fcbe03dc84e5bf8d9b712a4d3d3a\workspace\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\476350383193ac4b6f75c205222f0121\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\e136e368b8ac5cdf62342aadb81b6a4e\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\40b681a8cbdc043ea189528c62ff9f9f\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\a5e166a1f324d478fdd1c787720ce4bf\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f4c8441528e6f39e9dbbdd260f5f2c59\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\455d2fdf03754d08930d30718a0b802e\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3649726a94f7228980568609fc1d3f5c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\18249ce1d8f09b701dbbf5f5cc8f3a4b\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0083b41fa831af0e80de980615adc567\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\50b5a0d95ab1b4c47cb2272f393d7993\workspace\transformed\runtime-annotation\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-retain-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\01f98fb203ab7b46d554b3823f2242bc\workspace\transformed\runtime-retain\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1208067d6fd86f14082071ff8466ad9f\workspace\transformed\runtime\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f9bed8ade94575b63456df7a5dbda840\workspace\transformed\runtime-saveable\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\72231f4ae7c68b35ba21cde90e5ef85e\workspace\transformed\savedstate-ktx-1.3.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4faf1e5c241ef2f2352c195acbb7f192\workspace\transformed\savedstate-compose\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0e3171ee1bf19a25e4d5fdd7a75d59e4\workspace\transformed\savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6d67f3c156c7b4d286c01fa2de1563da\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27e892cb2c87c80c5efe810e4c5b9591\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d7111725656c5872c4ede6ba27d59cc9\workspace\transformed\core-ktx-1.18.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\98d3999c62363c63b8415ec33278af63\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7f955d501ba836c261add265207d30c4\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\eae7c531fed383bd699c855cf0442fbc\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\87ab1782cb861abbbe876eb22fc7dc6f\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\944d1720b01406889a1b3b465e648488\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4515e20c10d9fbcc8c8b5399795338d9\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0b53ac11da1a2a11435652a0644ab73b\workspace\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9ca53870f078ee37b7d78208a166fb8b\workspace\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0612c1c8a193fabb5be62e2f9e38a640\workspace\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:4:5-20:19
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:4:5-20:19
+MERGED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-19:19
+MERGED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-19:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:22:5-27:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:22:5-27:19
+MERGED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:22:5-29:19
+MERGED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:22:5-29:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\eae7c531fed383bd699c855cf0442fbc\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\eae7c531fed383bd699c855cf0442fbc\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:8:9-35
+	android:label
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:7:9-41
+	android:icon
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:6:9-45
+	android:allowBackup
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:5:9-35
+	android:theme
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:9:9-50
+activity#com.ezcanvas.demo.MainActivity
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:10:9-19:20
+	android:label
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:13:13-45
+	android:exported
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:12:13-36
+	android:theme
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:14:13-54
+	android:name
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:11:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:15:13-18:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:16:17-69
+	android:name
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:16:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:17:17-77
+	android:name
+		ADDED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml:17:27-74
+uses-sdk
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+MERGED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2f3a906367ee39ca683c75f29e60f4fa\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2f3a906367ee39ca683c75f29e60f4fa\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\ce1364e3712ec288d342cf57f6821f65\workspace\transformed\material-ripple\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\ce1364e3712ec288d342cf57f6821f65\workspace\transformed\material-ripple\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9f3adcacc33b2bcd7a9f5a3b953384ba\workspace\transformed\animation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9f3adcacc33b2bcd7a9f5a3b953384ba\workspace\transformed\animation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2fb09ce62d0966d6987d07c2d9352f08\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2fb09ce62d0966d6987d07c2d9352f08\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c3d7b6ef7e35292b7b406ec205f382c\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c3d7b6ef7e35292b7b406ec205f382c\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5b5d0d893522e59b8b6989a05a320ec2\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5b5d0d893522e59b8b6989a05a320ec2\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bed9a1d68cd7a029ea22978b7903c42d\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bed9a1d68cd7a029ea22978b7903c42d\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\735f14c4b0a35528995ec8ad3e41a593\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\735f14c4b0a35528995ec8ad3e41a593\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5e8ebd5489e0d44e32e880e545f922ac\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\5e8ebd5489e0d44e32e880e545f922ac\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\dbf9f1a3a485ed9ab495627a882fbd39\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\dbf9f1a3a485ed9ab495627a882fbd39\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\cee56c10c774484f2d0258b08f1a22ef\workspace\transformed\ui-graphics\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\cee56c10c774484f2d0258b08f1a22ef\workspace\transformed\ui-graphics\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\522a29846aebfc6dde7bf45b45928239\workspace\transformed\material3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\522a29846aebfc6dde7bf45b45928239\workspace\transformed\material3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\675bfb53d138753e4e01f6572836a561\workspace\transformed\foundation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\675bfb53d138753e4e01f6572836a561\workspace\transformed\foundation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigationevent:navigationevent-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\26f2dcf18b7f59d665e6a228ad69da3f\workspace\transformed\navigationevent\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigationevent:navigationevent-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\26f2dcf18b7f59d665e6a228ad69da3f\workspace\transformed\navigationevent\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigationevent:navigationevent-compose-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6241da734be4c31f1aefdf10b8ac9437\workspace\transformed\navigationevent-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigationevent:navigationevent-compose-android:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6241da734be4c31f1aefdf10b8ac9437\workspace\transformed\navigationevent-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bfa2ec3eb465eafc57787bfa2bc6470d\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\bfa2ec3eb465eafc57787bfa2bc6470d\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3ca03e579cea2fc8eb0aeeda652d8906\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3ca03e579cea2fc8eb0aeeda652d8906\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b48b36294147f17678eacdb9cd16e1e7\workspace\transformed\ui\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b48b36294147f17678eacdb9cd16e1e7\workspace\transformed\ui\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\33ac65d09a8a83bd5219dba23badeaa3\workspace\transformed\activity-ktx-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\33ac65d09a8a83bd5219dba23badeaa3\workspace\transformed\activity-ktx-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\85fd45101c84b81e8015b689bedc08e6\workspace\transformed\activity-1.13.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\85fd45101c84b81e8015b689bedc08e6\workspace\transformed\activity-1.13.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-compose:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\68d4999d0f56edc9c5e677d5829499e2\workspace\transformed\activity-compose-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.13.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\68d4999d0f56edc9c5e677d5829499e2\workspace\transformed\activity-compose-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\206aa5f37b78829b1ee8e22da29c9140\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\206aa5f37b78829b1ee8e22da29c9140\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.6.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\559c1a73906ebc13a6ba7fbc6d6e46c6\workspace\transformed\transition-1.6.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.transition:transition:1.6.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\559c1a73906ebc13a6ba7fbc6d6e46c6\workspace\transformed\transition-1.6.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.window:window-core-android:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b5136a4885d570e0269f105ca2a3e518\workspace\transformed\window-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.window:window-core-android:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\b5136a4885d570e0269f105ca2a3e518\workspace\transformed\window-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\41b66a82dedbeb124888af7048f1b1a1\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\41b66a82dedbeb124888af7048f1b1a1\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\84e6b1ac4cecd1e1cf7d7dd0c46503d0\workspace\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\84e6b1ac4cecd1e1cf7d7dd0c46503d0\workspace\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\94f8589c55ab7aafd4c3b34df847c037\workspace\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\94f8589c55ab7aafd4c3b34df847c037\workspace\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\13f4fcbe03dc84e5bf8d9b712a4d3d3a\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\13f4fcbe03dc84e5bf8d9b712a4d3d3a\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\476350383193ac4b6f75c205222f0121\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\476350383193ac4b6f75c205222f0121\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\e136e368b8ac5cdf62342aadb81b6a4e\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\e136e368b8ac5cdf62342aadb81b6a4e\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\40b681a8cbdc043ea189528c62ff9f9f\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\40b681a8cbdc043ea189528c62ff9f9f\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\a5e166a1f324d478fdd1c787720ce4bf\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\a5e166a1f324d478fdd1c787720ce4bf\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f4c8441528e6f39e9dbbdd260f5f2c59\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f4c8441528e6f39e9dbbdd260f5f2c59\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\455d2fdf03754d08930d30718a0b802e\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\455d2fdf03754d08930d30718a0b802e\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3649726a94f7228980568609fc1d3f5c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\3649726a94f7228980568609fc1d3f5c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\18249ce1d8f09b701dbbf5f5cc8f3a4b\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\18249ce1d8f09b701dbbf5f5cc8f3a4b\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0083b41fa831af0e80de980615adc567\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0083b41fa831af0e80de980615adc567\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\50b5a0d95ab1b4c47cb2272f393d7993\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\50b5a0d95ab1b4c47cb2272f393d7993\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-retain-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\01f98fb203ab7b46d554b3823f2242bc\workspace\transformed\runtime-retain\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-retain-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\01f98fb203ab7b46d554b3823f2242bc\workspace\transformed\runtime-retain\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1208067d6fd86f14082071ff8466ad9f\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1208067d6fd86f14082071ff8466ad9f\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f9bed8ade94575b63456df7a5dbda840\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\f9bed8ade94575b63456df7a5dbda840\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\72231f4ae7c68b35ba21cde90e5ef85e\workspace\transformed\savedstate-ktx-1.3.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\72231f4ae7c68b35ba21cde90e5ef85e\workspace\transformed\savedstate-ktx-1.3.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4faf1e5c241ef2f2352c195acbb7f192\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4faf1e5c241ef2f2352c195acbb7f192\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0e3171ee1bf19a25e4d5fdd7a75d59e4\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.2] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0e3171ee1bf19a25e4d5fdd7a75d59e4\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6d67f3c156c7b4d286c01fa2de1563da\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\6d67f3c156c7b4d286c01fa2de1563da\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27e892cb2c87c80c5efe810e4c5b9591\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27e892cb2c87c80c5efe810e4c5b9591\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d7111725656c5872c4ede6ba27d59cc9\workspace\transformed\core-ktx-1.18.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d7111725656c5872c4ede6ba27d59cc9\workspace\transformed\core-ktx-1.18.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\98d3999c62363c63b8415ec33278af63\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\98d3999c62363c63b8415ec33278af63\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7f955d501ba836c261add265207d30c4\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7f955d501ba836c261add265207d30c4\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\eae7c531fed383bd699c855cf0442fbc\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\eae7c531fed383bd699c855cf0442fbc\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\87ab1782cb861abbbe876eb22fc7dc6f\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\87ab1782cb861abbbe876eb22fc7dc6f\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\944d1720b01406889a1b3b465e648488\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\944d1720b01406889a1b3b465e648488\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4515e20c10d9fbcc8c8b5399795338d9\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\4515e20c10d9fbcc8c8b5399795338d9\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0b53ac11da1a2a11435652a0644ab73b\workspace\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0b53ac11da1a2a11435652a0644ab73b\workspace\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9ca53870f078ee37b7d78208a166fb8b\workspace\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\9ca53870f078ee37b7d78208a166fb8b\workspace\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0612c1c8a193fabb5be62e2f9e38a640\workspace\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\0612c1c8a193fabb5be62e2f9e38a640\workspace\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Rotem\AndroidStudioProjects\EZCanvas\app\src\main\AndroidManifest.xml
+provider#androidx.core.content.FileProvider
+ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:9-18:20
+	android:grantUriPermissions
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:13-47
+	android:authorities
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:12:13-73
+	android:exported
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:13-37
+	android:name
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:13-62
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:13-17:63
+	android:resource
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:17:17-60
+	android:name
+		ADDED from [:ezcanvas] C:\Users\Rotem\AndroidStudioProjects\EZCanvas\ezcanvas\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:17-67
+activity#androidx.compose.ui.tooling.PreviewActivity
+ADDED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\859a8ff2cbe487b095874d00ae8f6ddd\workspace\transformed\ui-tooling\AndroidManifest.xml:24:13-71
+activity#androidx.activity.ComponentActivity
+ADDED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:23:9-26:79
+	android:exported
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:25:13-36
+	android:theme
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:26:13-76
+	android:name
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.11.3] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\7dd5022cdce83e517727dbc14436ec9a\workspace\transformed\ui-test-manifest-1.11.3\AndroidManifest.xml:24:13-63
+uses-library#androidx.window.extensions
+ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:23:9-25:40
+	android:required
+		ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:24:13-54
+uses-library#androidx.window.sidecar
+ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:26:9-28:40
+	android:required
+		ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from [androidx.window:window:1.5.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2c4eb445e2d0adc301f371eef641aa37\workspace\transformed\window-1.5.0\AndroidManifest.xml:27:13-51
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\502b033a84f2dbd4cb5d856dcdcccc2c\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\d0eb643bfba9ad75df13468520a40ded\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:23:9-81
+permission#com.ezcanvas.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:26:22-94
+uses-permission#com.ezcanvas.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.18.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\1a30871d838a250db34da7f382704c1a\workspace\transformed\core-1.18.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\2992a0f304a1d480c8b9325890dbdbb4\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Rotem\.gradle\caches\9.3.1\transforms\27262d3cb7e6c3df306a20d9d7f4fb4c\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92

@@ -1,0 +1,4 @@
+<resources>
+    <!-- Compose handles all visuals; the Activity just needs a no-action-bar theme. -->
+    <style name="Theme.EZCanvasDemo" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

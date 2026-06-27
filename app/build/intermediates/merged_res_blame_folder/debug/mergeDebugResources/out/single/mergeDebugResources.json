@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\Rotem\\.gradle\\daemon\\9.3.1\\com.ezcanvas.demo.app-debug-41:\\drawable_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Rotem\\.gradle\\daemon\\9.3.1\\com.ezcanvas.demo.app-main-43:\\drawable\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Rotem\\.gradle\\daemon\\9.3.1\\com.ezcanvas.demo.app-debug-41:\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\Rotem\\.gradle\\daemon\\9.3.1\\com.ezcanvas.demo.app-main-43:\\xml\\file_paths.xml"
+    }
+]

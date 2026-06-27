@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ezcanvas.EzCanvasStateTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-06-26T23:35:02.906Z" hostname="DESKTOP-TF2EUK7" time="0.166">
+  <properties/>
+  <testcase name="commit_then_undo_then_redo" classname="com.ezcanvas.EzCanvasStateTest" time="0.128"/>
+  <testcase name="shape_round_trips_through_saver_encoding" classname="com.ezcanvas.EzCanvasStateTest" time="0.014"/>
+  <testcase name="history_is_capped_at_maxHistorySize" classname="com.ezcanvas.EzCanvasStateTest" time="0.002"/>
+  <testcase name="commit_clears_redo_stack" classname="com.ezcanvas.EzCanvasStateTest" time="0.001"/>
+  <testcase name="stroke_round_trips_through_saver_encoding" classname="com.ezcanvas.EzCanvasStateTest" time="0.001"/>
+  <testcase name="scanline_flood_stops_at_boundary" classname="com.ezcanvas.EzCanvasStateTest" time="0.002"/>
+  <testcase name="clear_removes_everything" classname="com.ezcanvas.EzCanvasStateTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

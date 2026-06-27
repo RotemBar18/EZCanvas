@@ -1,0 +1,9 @@
+# JitPack build configuration.
+# Builds and publishes the :ezcanvas module so it can be consumed as:
+#   com.github.RotemBar18.EZCanvas:ezcanvas:<release-tag>
+#
+# If the JitPack build fails on the JDK, try changing openjdk17 to openjdk21.
+jdk:
+  - openjdk17
+install:
+  - ./gradlew :ezcanvas:publishToMavenLocal
