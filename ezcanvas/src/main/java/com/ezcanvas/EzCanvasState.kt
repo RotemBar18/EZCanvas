@@ -93,35 +93,35 @@ class EzCanvasState {
     companion object {
         /** Saves settings + every element so the drawing survives rotation / process recreation. */
         val Saver = mapSaver(
-            save = { s ->
+            save = { state ->
                 mapOf(
                     "v" to SAVE_VERSION,
-                    "tool" to s.tool.ordinal,
-                    "color" to s.strokeColor.toArgb(),
-                    "width" to s.strokeWidthPx,
-                    "alpha" to s.strokeAlpha,
-                    "eraser" to s.eraserWidthPx,
-                    "style" to s.lineStyle.ordinal,
-                    "smoothing" to s.smoothing,
-                    "bg" to s.backgroundColor.toArgb(),
-                    "pattern" to s.backgroundPattern.ordinal,
+                    "tool" to state.tool.ordinal,
+                    "color" to state.strokeColor.toArgb(),
+                    "width" to state.strokeWidthPx,
+                    "alpha" to state.strokeAlpha,
+                    "eraser" to state.eraserWidthPx,
+                    "style" to state.lineStyle.ordinal,
+                    "smoothing" to state.smoothing,
+                    "bg" to state.backgroundColor.toArgb(),
+                    "pattern" to state.backgroundPattern.ordinal,
                     // Fills are baked bitmaps; skip them (re-created by tapping again after rotation).
-                    "elements" to ArrayList(s.elements.filter { it !is FillElement }.map { encodeElement(it) }),
+                    "elements" to ArrayList(state.elements.filter { it !is FillElement }.map { encodeElement(it) }),
                 )
             },
-            restore = { m ->
+            restore = { savedMap ->
                 EzCanvasState().apply {
-                    tool = Tool.entries[m["tool"] as Int]
-                    strokeColor = Color(m["color"] as Int)
-                    strokeWidthPx = m["width"] as Float
-                    strokeAlpha = m["alpha"] as Float
-                    eraserWidthPx = m["eraser"] as Float
-                    lineStyle = LineStyle.entries[m["style"] as Int]
-                    smoothing = m["smoothing"] as Boolean
-                    backgroundColor = Color(m["bg"] as Int)
-                    backgroundPattern = BackgroundPattern.entries[m["pattern"] as Int]
+                    tool = Tool.entries[savedMap["tool"] as Int]
+                    strokeColor = Color(savedMap["color"] as Int)
+                    strokeWidthPx = savedMap["width"] as Float
+                    strokeAlpha = savedMap["alpha"] as Float
+                    eraserWidthPx = savedMap["eraser"] as Float
+                    lineStyle = LineStyle.entries[savedMap["style"] as Int]
+                    smoothing = savedMap["smoothing"] as Boolean
+                    backgroundColor = Color(savedMap["bg"] as Int)
+                    backgroundPattern = BackgroundPattern.entries[savedMap["pattern"] as Int]
                     @Suppress("UNCHECKED_CAST")
-                    (m["elements"] as ArrayList<FloatArray>).forEach { elements.add(decodeElement(it)) }
+                    (savedMap["elements"] as ArrayList<FloatArray>).forEach { elements.add(decodeElement(it)) }
                 }
             },
         )
@@ -145,58 +145,58 @@ internal const val SAVE_VERSION = 2
 private const val TYPE_STROKE = 0f
 private const val TYPE_SHAPE = 1f
 
-internal fun encodeElement(e: CanvasElement): FloatArray = when (e) {
-    is StrokeElement -> FloatArray(6 + e.points.size * 3).also { arr ->
-        arr[0] = TYPE_STROKE
-        arr[1] = Float.fromBits(e.color.toArgb())
-        arr[2] = e.widthPx
-        arr[3] = e.alpha
-        arr[4] = e.style.ordinal.toFloat()
-        arr[5] = e.tool.ordinal.toFloat()
-        var k = 6
-        for (p in e.points) {
-            arr[k++] = p.x
-            arr[k++] = p.y
-            arr[k++] = p.widthScale
+internal fun encodeElement(element: CanvasElement): FloatArray = when (element) {
+    is StrokeElement -> FloatArray(6 + element.points.size * 3).also { serializedData ->
+        serializedData[0] = TYPE_STROKE
+        serializedData[1] = Float.fromBits(element.color.toArgb())
+        serializedData[2] = element.widthPx
+        serializedData[3] = element.alpha
+        serializedData[4] = element.style.ordinal.toFloat()
+        serializedData[5] = element.tool.ordinal.toFloat()
+        var dataIndex = 6
+        for (point in element.points) {
+            serializedData[dataIndex++] = point.x
+            serializedData[dataIndex++] = point.y
+            serializedData[dataIndex++] = point.widthScale
         }
     }
 
     is ShapeElement -> floatArrayOf(
         TYPE_SHAPE,
-        Float.fromBits(e.color.toArgb()),
-        e.widthPx,
-        e.alpha,
-        e.style.ordinal.toFloat(),
-        e.kind.ordinal.toFloat(),
-        e.start.x, e.start.y, e.end.x, e.end.y,
+        Float.fromBits(element.color.toArgb()),
+        element.widthPx,
+        element.alpha,
+        element.style.ordinal.toFloat(),
+        element.kind.ordinal.toFloat(),
+        element.start.x, element.start.y, element.end.x, element.end.y,
     )
 
     is FillElement -> error("FillElement is not serialized; filter it out before encoding")
 }
 
-internal fun decodeElement(arr: FloatArray): CanvasElement = if (arr[0] == TYPE_SHAPE) {
+internal fun decodeElement(serializedData: FloatArray): CanvasElement = if (serializedData[0] == TYPE_SHAPE) {
     ShapeElement(
-        kind = ShapeKind.entries[arr[5].toInt()],
-        start = Offset(arr[6], arr[7]),
-        end = Offset(arr[8], arr[9]),
-        color = Color(arr[1].toRawBits()),
-        widthPx = arr[2],
-        alpha = arr[3],
-        style = LineStyle.entries[arr[4].toInt()],
+        kind = ShapeKind.entries[serializedData[5].toInt()],
+        start = Offset(serializedData[6], serializedData[7]),
+        end = Offset(serializedData[8], serializedData[9]),
+        color = Color(serializedData[1].toRawBits()),
+        widthPx = serializedData[2],
+        alpha = serializedData[3],
+        style = LineStyle.entries[serializedData[4].toInt()],
     )
 } else {
-    val points = ArrayList<StrokePoint>((arr.size - 6) / 3)
-    var k = 6
-    while (k + 2 < arr.size) {
-        points.add(StrokePoint(arr[k], arr[k + 1], arr[k + 2]))
-        k += 3
+    val points = ArrayList<StrokePoint>((serializedData.size - 6) / 3)
+    var dataIndex = 6
+    while (dataIndex + 2 < serializedData.size) {
+        points.add(StrokePoint(serializedData[dataIndex], serializedData[dataIndex + 1], serializedData[dataIndex + 2]))
+        dataIndex += 3
     }
     StrokeElement(
         points = points,
-        tool = Tool.entries[arr[5].toInt()],
-        color = Color(arr[1].toRawBits()),
-        widthPx = arr[2],
-        alpha = arr[3],
-        style = LineStyle.entries[arr[4].toInt()],
+        tool = Tool.entries[serializedData[5].toInt()],
+        color = Color(serializedData[1].toRawBits()),
+        widthPx = serializedData[2],
+        alpha = serializedData[3],
+        style = LineStyle.entries[serializedData[4].toInt()],
     )
 }

@@ -63,9 +63,9 @@ fun EzCanvas(state: EzCanvasState, modifier: Modifier = Modifier) {
 
     Canvas(
         modifier = modifier
-            .onSizeChanged {
-                state.widthPx = it.width
-                state.heightPx = it.height
+            .onSizeChanged { newSize ->
+                state.widthPx = newSize.width
+                state.heightPx = newSize.height
             }
             .pointerInput(state, state.tool) {
                 if (state.tool == Tool.BUCKET) {
@@ -80,10 +80,10 @@ fun EzCanvas(state: EzCanvasState, modifier: Modifier = Modifier) {
                             liveStart = offset
                             liveEnd = offset
                         },
-                        onDrag = { change, _ ->
-                            livePoints.add(change.position)
-                            liveEnd = change.position
-                            change.consume()
+                        onDrag = { pointerChange, _ ->
+                            livePoints.add(pointerChange.position)
+                            liveEnd = pointerChange.position
+                            pointerChange.consume()
                         },
                         onDragEnd = {
                             buildLiveElement(state, livePoints.toList(), liveStart, liveEnd)
@@ -151,24 +151,24 @@ private fun buildLiveElement(
 /** Anchor a square/circle at [start] and grow it 1:1 toward the drag direction. Lines pass through. */
 private fun constrainShapeEnd(kind: ShapeKind, start: Offset, end: Offset): Offset {
     if (kind == ShapeKind.Line) return end
-    val dx = end.x - start.x
-    val dy = end.y - start.y
-    val side = max(abs(dx), abs(dy))
-    val sx = if (dx < 0) -1f else 1f
-    val sy = if (dy < 0) -1f else 1f
-    return Offset(start.x + side * sx, start.y + side * sy)
+    val deltaX = end.x - start.x
+    val deltaY = end.y - start.y
+    val maxSideLength = max(abs(deltaX), abs(deltaY))
+    val directionX = if (deltaX < 0) -1f else 1f
+    val directionY = if (deltaY < 0) -1f else 1f
+    return Offset(start.x + maxSideLength * directionX, start.y + maxSideLength * directionY)
 }
 
 internal fun baseAlpha(tool: Tool): Float = if (tool == Tool.MARKER) 0.45f else 1f
 
 /** Dash on/off intervals for a [LineStyle], scaled to the stroke width, or null when solid. */
 internal fun dashIntervals(style: LineStyle, width: Float): FloatArray? {
-    val w = width.coerceAtLeast(1f)
+    val strokeWidth = width.coerceAtLeast(1f)
     return when (style) {
         LineStyle.Solid -> null
-        LineStyle.Dotted -> floatArrayOf(0.01f, w * 2f)        // ~zero "on" + round cap = dots
-        LineStyle.Dashed -> floatArrayOf(w * 3f, w * 2f)
-        LineStyle.DashDot -> floatArrayOf(w * 3f, w * 2f, 0.01f, w * 2f)
+        LineStyle.Dotted -> floatArrayOf(0.01f, strokeWidth * 2f)        // ~zero "on" + round cap = dots
+        LineStyle.Dashed -> floatArrayOf(strokeWidth * 3f, strokeWidth * 2f)
+        LineStyle.DashDot -> floatArrayOf(strokeWidth * 3f, strokeWidth * 2f, 0.01f, strokeWidth * 2f)
     }
 }
 
@@ -205,7 +205,7 @@ private fun DrawScope.drawElement(element: CanvasElement, smoothing: Boolean) {
 private fun DrawScope.drawStrokeElement(stroke: StrokeElement, smoothing: Boolean) {
     if (stroke.points.size < 2) return
     val path = buildStrokePath(stroke.points.map { Offset(it.x, it.y) }, smoothing)
-    val effect = dashIntervals(stroke.style, stroke.widthPx)?.let { PathEffect.dashPathEffect(it, 0f) }
+    val dashEffect = dashIntervals(stroke.style, stroke.widthPx)?.let { PathEffect.dashPathEffect(it, 0f) }
     when (stroke.tool) {
         Tool.ERASER -> drawPath(
             path = path,
@@ -231,7 +231,7 @@ private fun DrawScope.drawStrokeElement(stroke: StrokeElement, smoothing: Boolea
         }
 
         else -> {
-            val cap = when {
+            val strokeCap = when {
                 dottedNeedsRoundCap(stroke.style) -> StrokeCap.Round
                 stroke.tool == Tool.MARKER || stroke.tool == Tool.CALLIGRAPHY -> StrokeCap.Square
                 else -> StrokeCap.Round
@@ -240,15 +240,15 @@ private fun DrawScope.drawStrokeElement(stroke: StrokeElement, smoothing: Boolea
                 path = path,
                 color = stroke.color,
                 alpha = stroke.alpha,
-                style = Stroke(stroke.widthPx, cap = cap, join = StrokeJoin.Round, pathEffect = effect),
+                style = Stroke(stroke.widthPx, cap = strokeCap, join = StrokeJoin.Round, pathEffect = dashEffect),
             )
         }
     }
 }
 
 private fun DrawScope.drawShapeElement(shape: ShapeElement) {
-    val effect = dashIntervals(shape.style, shape.widthPx)?.let { PathEffect.dashPathEffect(it, 0f) }
-    val cap = if (dottedNeedsRoundCap(shape.style)) StrokeCap.Round else StrokeCap.Butt
+    val dashEffect = dashIntervals(shape.style, shape.widthPx)?.let { PathEffect.dashPathEffect(it, 0f) }
+    val strokeCap = if (dottedNeedsRoundCap(shape.style)) StrokeCap.Round else StrokeCap.Butt
     val topLeft = Offset(min(shape.start.x, shape.end.x), min(shape.start.y, shape.end.y))
     val boxSize = Size(abs(shape.end.x - shape.start.x), abs(shape.end.y - shape.start.y))
     when (shape.kind) {
@@ -257,8 +257,8 @@ private fun DrawScope.drawShapeElement(shape: ShapeElement) {
             start = shape.start,
             end = shape.end,
             strokeWidth = shape.widthPx,
-            cap = cap,
-            pathEffect = effect,
+            cap = strokeCap,
+            pathEffect = dashEffect,
             alpha = shape.alpha,
         )
 
@@ -267,7 +267,7 @@ private fun DrawScope.drawShapeElement(shape: ShapeElement) {
             topLeft = topLeft,
             size = boxSize,
             alpha = shape.alpha,
-            style = Stroke(shape.widthPx, cap = cap, join = StrokeJoin.Miter, pathEffect = effect),
+            style = Stroke(shape.widthPx, cap = strokeCap, join = StrokeJoin.Miter, pathEffect = dashEffect),
         )
 
         ShapeKind.Circle -> drawOval(
@@ -275,7 +275,7 @@ private fun DrawScope.drawShapeElement(shape: ShapeElement) {
             topLeft = topLeft,
             size = boxSize,
             alpha = shape.alpha,
-            style = Stroke(shape.widthPx, cap = cap, pathEffect = effect),
+            style = Stroke(shape.widthPx, cap = strokeCap, pathEffect = dashEffect),
         )
     }
 }
@@ -297,33 +297,33 @@ private fun DrawScope.drawBackground(color: Color, image: ImageBitmap?, pattern:
     when (pattern) {
         BackgroundPattern.None -> Unit
         BackgroundPattern.Grid -> {
-            var x = step
-            while (x < size.width) {
-                drawLine(gridColor, Offset(x, 0f), Offset(x, size.height), 1f)
-                x += step
+            var currentX = step
+            while (currentX < size.width) {
+                drawLine(gridColor, Offset(currentX, 0f), Offset(currentX, size.height), 1f)
+                currentX += step
             }
-            var y = step
-            while (y < size.height) {
-                drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1f)
-                y += step
+            var currentY = step
+            while (currentY < size.height) {
+                drawLine(gridColor, Offset(0f, currentY), Offset(size.width, currentY), 1f)
+                currentY += step
             }
         }
         BackgroundPattern.Dots -> {
-            var y = step
-            while (y < size.height) {
-                var x = step
-                while (x < size.width) {
-                    drawCircle(gridColor, radius = 2.5f, center = Offset(x, y))
-                    x += step
+            var currentY = step
+            while (currentY < size.height) {
+                var currentX = step
+                while (currentX < size.width) {
+                    drawCircle(gridColor, radius = 2.5f, center = Offset(currentX, currentY))
+                    currentX += step
                 }
-                y += step
+                currentY += step
             }
         }
         BackgroundPattern.Lined -> {
-            var y = step
-            while (y < size.height) {
-                drawLine(gridColor, Offset(0f, y), Offset(size.width, y), 1f)
-                y += step
+            var currentY = step
+            while (currentY < size.height) {
+                drawLine(gridColor, Offset(0f, currentY), Offset(size.width, currentY), 1f)
+                currentY += step
             }
         }
     }
