@@ -21,6 +21,7 @@ Apps keep rebuilding the same drawing surface for signature capture, screenshot 
 
 ## Features
 
+- **Headless Logic Engine**: The state is completely decoupled from the UI. Use our ready-made toolbar or build a 100% custom interface using the `EzCanvasState` API.
 - **Brushes**: pen, marker, neon glow, and calligraphy
 - **Eraser** that clears strokes without touching the background
 - **Shapes**: line, square, and circle, where squares and circles lock to 1:1
