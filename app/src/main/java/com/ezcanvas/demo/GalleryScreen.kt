@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -32,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ezcanvas.demo.examples.ExampleInfo
+import com.ezcanvas.demo.examples.Examples
 import com.ezcanvas.demo.ui.EzColors
 
 /** Hi-fi Screen 3 — "What you can build": cards that open a working example of the library. */
@@ -44,7 +47,8 @@ fun GalleryScreen(
         Modifier
             .fillMaxSize()
             .background(EzColors.Surface)
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .navigationBarsPadding(),
     ) {
         Row(
             Modifier

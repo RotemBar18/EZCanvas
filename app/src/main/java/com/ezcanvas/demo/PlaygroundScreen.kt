@@ -1,6 +1,7 @@
 package com.ezcanvas.demo
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,24 +10,34 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +50,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -69,12 +86,14 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
     var tools by remember { mutableStateOf(AllTools) }
     var controls by remember { mutableStateOf(DefaultToolbarControls) }
     var showConfig by remember { mutableStateOf(false) }
+    var renaming by remember { mutableStateOf(false) }
 
     var initialized by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         if (!initialized) {
             state.strokeColor = EzColors.Primary
             state.strokeWidthPx = 6f
+            state.drawingName = "Untitled"
             initialized = true
         }
     }
@@ -106,7 +125,9 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
             EzCanvas(state, Modifier.fillMaxSize())
 
             TopBar(
+                title = state.drawingName,
                 showShare = ToolbarControl.Export in controls,
+                onRename = { renaming = true },
                 onExamples = onOpenExamples,
                 onShare = { state.shareAsPng(context) },
                 onConfigure = { showConfig = true },
@@ -128,11 +149,104 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
             onDismiss = { showConfig = false },
         )
     }
+
+    if (renaming) {
+        RenameDialog(
+            current = state.drawingName,
+            onConfirm = { state.drawingName = it },
+            onDismiss = { renaming = false },
+        )
+    }
+}
+
+/**
+ * The demo renames from its own top bar, so this is app UI. An app that does not want to build
+ * one can enable `ToolbarControl.Rename` and get the library's own version instead.
+ */
+@Composable
+private fun RenameDialog(current: String, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
+    var text by remember { mutableStateOf(current) }
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+    val confirm = {
+        onConfirm(text.trim().ifBlank { "Untitled" })
+        onDismiss()
+    }
+
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Surface(
+            shape = RoundedCornerShape(24.dp),
+            color = EzColors.Surface,
+            shadowElevation = 12.dp,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        ) {
+            Column(Modifier.padding(22.dp)) {
+                Text(
+                    "Drawing name",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = EzColors.Ink,
+                )
+                Spacer(Modifier.height(16.dp))
+                BasicTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = EzColors.Ink),
+                    cursorBrush = SolidColor(EzColors.Primary),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = { confirm() }),
+                    modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
+                    decorationBox = { innerField ->
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(14.dp))
+                                .background(EzColors.ChipBg)
+                                .border(1.dp, EzColors.Divider, RoundedCornerShape(14.dp))
+                                .padding(horizontal = 16.dp, vertical = 15.dp),
+                        ) {
+                            if (text.isEmpty()) {
+                                Text("Name", style = MaterialTheme.typography.bodyLarge, color = EzColors.SectionLabel)
+                            }
+                            innerField()
+                        }
+                    },
+                )
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    "Exports as ${text.trim().ifBlank { "drawing" }}.png",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = EzColors.Subtle,
+                )
+                Spacer(Modifier.height(20.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Spacer(Modifier.weight(1f))
+                    Box(
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(1.dp, EzColors.Divider, RoundedCornerShape(12.dp))
+                            .clickable { onDismiss() }
+                            .padding(horizontal = 20.dp, vertical = 12.dp),
+                    ) { Text("Cancel", style = MaterialTheme.typography.labelLarge, color = EzColors.Ink) }
+                    Box(
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(EzColors.Ink)
+                            .clickable { confirm() }
+                            .padding(horizontal = 20.dp, vertical = 12.dp),
+                    ) { Text("Save", style = MaterialTheme.typography.labelLarge, color = EzColors.Surface) }
+                }
+            }
+        }
+    }
 }
 
 @Composable
 private fun TopBar(
+    title: String,
     showShare: Boolean,
+    onRename: () -> Unit,
     onExamples: () -> Unit,
     onShare: () -> Unit,
     onConfigure: () -> Unit,
@@ -144,6 +258,7 @@ private fun TopBar(
                 .shadow(6.dp, RoundedCornerShape(14.dp), clip = false)
                 .clip(RoundedCornerShape(14.dp))
                 .background(EzColors.Surface)
+                .clickable { onRename() }
                 .padding(6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -162,11 +277,17 @@ private fun TopBar(
                 )
             }
             Text(
-                "Untitled",
+                title,
                 color = EzColors.Ink,
                 style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(end = 6.dp),
             )
+            Icon(
+                Icons.Filled.Edit,
+                "Rename drawing",
+                tint = EzColors.Muted,
+                modifier = Modifier.size(14.dp).padding(end = 2.dp),
+            )
+            Spacer(Modifier.width(2.dp))
         }
 
         Spacer(Modifier.weight(1f))

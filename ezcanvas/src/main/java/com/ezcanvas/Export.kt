@@ -19,6 +19,7 @@ import com.ezcanvas.model.ShapeElement
 import com.ezcanvas.model.ShapeKind
 import com.ezcanvas.model.StrokeElement
 import com.ezcanvas.model.StrokePoint
+import com.ezcanvas.model.TextElement
 import com.ezcanvas.model.Tool
 import kotlin.math.max
 import kotlin.math.min
@@ -59,11 +60,13 @@ fun EzCanvasState.exportBitmap(): Bitmap? {
  * Render only the elements onto a transparent bitmap at [w]×[h] — used as the flood-fill source,
  * so empty areas stay transparent and drawn pixels act as fill boundaries.
  */
-internal fun EzCanvasState.renderElementsBitmap(w: Int, h: Int): Bitmap {
+internal fun EzCanvasState.renderElementsBitmap(w: Int, h: Int, count: Int = elements.size): Bitmap {
     val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
     val canvas = AndroidCanvas(bitmap)
     val layer = canvas.saveLayer(0f, 0f, w.toFloat(), h.toFloat(), null)
-    for (element in elements) drawElementAndroid(canvas, element, smoothing)
+    for (index in 0 until count.coerceAtMost(elements.size)) {
+        drawElementAndroid(canvas, elements[index], smoothing)
+    }
     canvas.restoreToCount(layer)
     return bitmap
 }
@@ -72,8 +75,27 @@ private fun drawElementAndroid(canvas: AndroidCanvas, element: CanvasElement, sm
     when (element) {
         is StrokeElement -> drawStrokeAndroid(canvas, element, smoothing)
         is ShapeElement -> drawShapeAndroid(canvas, element)
-        is FillElement -> canvas.drawBitmap(element.image.asAndroidBitmap(), element.topLeft.x, element.topLeft.y, null)
+        // A pending fill has no pixels yet; it is skipped until it has been replayed.
+        is FillElement -> element.image?.let {
+            canvas.drawBitmap(it.asAndroidBitmap(), element.topLeft.x, element.topLeft.y, null)
+        }
+        is TextElement -> drawTextAndroid(canvas, element)
     }
+}
+
+/**
+ * Draw text to match the screen. Compose positions text by its top left, while Android draws from
+ * the baseline, so the ascent is added back to land on the same pixels.
+ */
+private fun drawTextAndroid(canvas: AndroidCanvas, element: TextElement) {
+    val paint = AndroidPaint().apply {
+        isAntiAlias = true
+        style = AndroidPaint.Style.FILL
+        color = element.color.toArgb()
+        alpha = (element.color.alpha * element.alpha * 255f).toInt()
+        textSize = element.sizePx
+    }
+    canvas.drawText(element.text, element.topLeft.x, element.topLeft.y - paint.fontMetrics.ascent, paint)
 }
 
 private fun buildAndroidPath(points: List<StrokePoint>, smoothing: Boolean): AndroidPath {
@@ -101,7 +123,11 @@ private fun roundCapStyle(style: LineStyle): Boolean =
     style == LineStyle.Dotted || style == LineStyle.DashDot
 
 private fun drawStrokeAndroid(canvas: AndroidCanvas, stroke: StrokeElement, smoothing: Boolean) {
-    if (stroke.points.size < 2) return
+    if (stroke.points.isEmpty()) return
+    if (stroke.points.size == 1) {
+        drawDotAndroid(canvas, stroke)
+        return
+    }
     val path = buildAndroidPath(stroke.points, smoothing)
     val paint = AndroidPaint().apply {
         isAntiAlias = true
@@ -139,6 +165,37 @@ private fun drawStrokeAndroid(canvas: AndroidCanvas, stroke: StrokeElement, smoo
             paint.alpha = (stroke.alpha * 255f).toInt()
             paint.strokeWidth = stroke.widthPx
             canvas.drawPath(path, paint)
+        }
+    }
+}
+
+/** The exported twin of the on screen dot, so a tap looks the same in the PNG. */
+private fun drawDotAndroid(canvas: AndroidCanvas, stroke: StrokeElement) {
+    val cx = stroke.points[0].x
+    val cy = stroke.points[0].y
+    val radius = stroke.widthPx / 2f
+    val paint = AndroidPaint().apply {
+        isAntiAlias = true
+        style = AndroidPaint.Style.FILL
+    }
+    when (stroke.tool) {
+        Tool.ERASER -> {
+            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+            canvas.drawCircle(cx, cy, radius, paint)
+        }
+
+        Tool.NEON -> {
+            paint.color = stroke.color.toArgb()
+            paint.alpha = (0.25f * stroke.alpha * 255f).toInt()
+            canvas.drawCircle(cx, cy, radius * 2.4f, paint)
+            paint.alpha = (stroke.alpha * 255f).toInt()
+            canvas.drawCircle(cx, cy, radius, paint)
+        }
+
+        else -> {
+            paint.color = stroke.color.toArgb()
+            paint.alpha = (stroke.alpha * 255f).toInt()
+            canvas.drawCircle(cx, cy, radius, paint)
         }
     }
 }

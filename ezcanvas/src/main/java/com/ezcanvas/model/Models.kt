@@ -19,8 +19,9 @@ import androidx.compose.ui.graphics.ImageBitmap
  * - [SQUARE] perfect 1:1 square (drag to size)
  * - [CIRCLE] perfect 1:1 circle (drag to size)
  * - [BUCKET] flood-fills the region under the tap with the selected color (paint bucket)
+ * - [TEXT] places typed text, and selects or drags text that is already there
  */
-enum class Tool { PEN, MARKER, NEON, CALLIGRAPHY, ERASER, LINE, SQUARE, CIRCLE, BUCKET }
+enum class Tool { PEN, MARKER, NEON, CALLIGRAPHY, ERASER, LINE, SQUARE, CIRCLE, BUCKET, TEXT }
 
 /** Background grid drawn behind the strokes. */
 enum class BackgroundPattern { None, Grid, Dots, Lined }
@@ -42,11 +43,8 @@ fun Tool.shapeKind(): ShapeKind? = when (this) {
 /** True when this tool draws a [ShapeElement] rather than a freehand [StrokeElement]. */
 val Tool.isShape: Boolean get() = shapeKind() != null
 
-/**
- * A single point in a freehand stroke. [widthScale] (0f..1f, 1f = full width) lets a stroke
- * taper — reserved for pressure/velocity brushes; current rendering uses a uniform width.
- */
-data class StrokePoint(val x: Float, val y: Float, val widthScale: Float = 1f)
+/** A single point in a freehand stroke, in canvas pixels. */
+data class StrokePoint(val x: Float, val y: Float)
 
 /**
  * One drawn thing on the canvas: either a freehand [StrokeElement] or a [ShapeElement].
@@ -92,19 +90,38 @@ data class ShapeElement(
 ) : CanvasElement
 
 /**
- * A paint-bucket fill: the result of flooding an enclosed region with a color. Because flood fill
- * is a pixel operation, the filled region is baked into [image] (a cropped bitmap positioned at
- * [topLeft]) rather than stored as vector data. [seed] and [color] record what produced it.
+ * Typed text placed on the canvas. [topLeft] is where the text starts, and [sizePx] is the font
+ * size in canvas pixels. Text is selectable and draggable, unlike strokes and shapes.
+ */
+data class TextElement(
+    val text: String,
+    val topLeft: Offset,
+    val sizePx: Float,
+    override val color: Color,
+    override val alpha: Float = 1f,
+) : CanvasElement {
+    override val widthPx: Float get() = sizePx
+    override val style: LineStyle get() = LineStyle.Solid
+}
+
+/**
+ * A paint-bucket fill.
  *
- * Not persisted across rotation — like a background image, a fill is re-created by tapping again.
+ * A filled region has no compact geometric description, so the result is baked into [image], a
+ * cropped bitmap positioned at [topLeft]. Bitmaps are far too large for saved state, so only the
+ * recipe is persisted: [seed] and [color]. After a rotation the fill is replayed from those, which
+ * is why [image] is null until it has been rendered.
  */
 class FillElement(
     val seed: Offset,
     override val color: Color,
-    val image: ImageBitmap,
+    val image: ImageBitmap?,
     val topLeft: Offset,
     override val alpha: Float = 1f,
 ) : CanvasElement {
     override val widthPx: Float get() = 0f
     override val style: LineStyle get() = LineStyle.Solid
+
+    /** True when this fill still has to be replayed, for example right after a rotation. */
+    val isPending: Boolean get() = image == null
 }

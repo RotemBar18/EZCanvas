@@ -2,11 +2,13 @@ package com.ezcanvas
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.ezcanvas.model.FillElement
 import com.ezcanvas.model.LineStyle
 import com.ezcanvas.model.ShapeElement
 import com.ezcanvas.model.ShapeKind
 import com.ezcanvas.model.StrokeElement
 import com.ezcanvas.model.StrokePoint
+import com.ezcanvas.model.TextElement
 import com.ezcanvas.model.Tool
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -76,14 +78,14 @@ class EzCanvasStateTest {
     @Test
     fun stroke_round_trips_through_saver_encoding() {
         val original = StrokeElement(
-            points = listOf(StrokePoint(3f, 4f, 0.5f), StrokePoint(5f, 6f, 1f)),
+            points = listOf(StrokePoint(3f, 4f), StrokePoint(5f, 6f)),
             tool = Tool.MARKER,
             color = Color.White, // 0xFFFFFFFF exercises the Float.fromBits/toRawBits color path
             widthPx = 12f,
             alpha = 0.7f,
             style = LineStyle.Dashed,
         )
-        assertEquals(original, decodeElement(encodeElement(original)))
+        assertEquals(original, decodeElement(encodeElement(original, 0), emptyList()))
     }
 
     @Test
@@ -97,7 +99,113 @@ class EzCanvasStateTest {
             alpha = 0.9f,
             style = LineStyle.DashDot,
         )
-        assertEquals(original, decodeElement(encodeElement(original)))
+        assertEquals(original, decodeElement(encodeElement(original, 0), emptyList()))
+    }
+
+    @Test
+    fun text_round_trips_with_its_contents_alongside() {
+        val original = TextElement(
+            text = "Check this",
+            topLeft = Offset(12f, 34f),
+            sizePx = 40f,
+            color = Color(0xFFE0463B),
+            alpha = 0.8f,
+        )
+        // Text contents live in a parallel list; the row stores the index into it.
+        assertEquals(original, decodeElement(encodeElement(original, 0), listOf("Check this")))
+    }
+
+    @Test
+    fun fill_survives_as_a_recipe_rather_than_pixels() {
+        val original = FillElement(
+            seed = Offset(120f, 80f),
+            color = Color(0xFF22C55E),
+            image = null,
+            topLeft = Offset.Zero,
+            alpha = 0.9f,
+        )
+
+        val restored = decodeElement(encodeElement(original, 0), emptyList()) as FillElement
+
+        // Only the seed and the paint are persisted; the pixels are replayed after layout.
+        assertEquals(original.seed, restored.seed)
+        assertEquals(original.color, restored.color)
+        assertEquals(original.alpha, restored.alpha, 0.01f)
+        assertTrue(restored.isPending)
+    }
+
+    @Test
+    fun editing_settings_updates_the_selected_text_only() {
+        val state = EzCanvasState()
+        state.commit(stroke())
+        state.commit(
+            TextElement(text = "Label", topLeft = Offset(5f, 5f), sizePx = 25f, color = Color.Black),
+        )
+
+        state.selectTextAt(1)
+        // Selecting pulls the text's own size back into the toolbar.
+        assertEquals(25f / TextSizeFactor, state.strokeWidthPx, 0.01f)
+
+        // Setting the colour alone is enough; no extra call is needed to make it stick.
+        state.strokeColor = Color.Red
+
+        assertEquals(Color.Red, (state.elements[1] as TextElement).color)
+        assertEquals(Color.Black, (state.elements[0] as StrokeElement).color) // stroke untouched
+    }
+
+    @Test
+    fun selecting_text_does_not_overwrite_it_with_the_previous_settings() {
+        val state = EzCanvasState()
+        // The toolbar is on a big red brush.
+        state.strokeColor = Color.Red
+        state.strokeWidthPx = 50f
+        state.strokeAlpha = 0.2f
+
+        state.commit(
+            TextElement(text = "Label", topLeft = Offset.Zero, sizePx = 25f, color = Color.Blue, alpha = 1f),
+        )
+        state.selectTextAt(0)
+
+        // Selecting reads the text, it must not push the previous brush settings onto it.
+        val selected = state.elements[0] as TextElement
+        assertEquals(Color.Blue, selected.color)
+        assertEquals(25f, selected.sizePx, 0.01f)
+        assertEquals(1f, selected.alpha, 0.01f)
+    }
+
+    @Test
+    fun remap_recentres_without_resizing() {
+        val state = EzCanvasState()
+        state.widthPx = 100
+        state.heightPx = 200
+        // A stroke from the canvas centre to a point 25px to its right.
+        state.commit(
+            StrokeElement(
+                points = listOf(StrokePoint(50f, 100f), StrokePoint(75f, 100f)),
+                tool = Tool.PEN,
+                color = Color.Black,
+                widthPx = 10f,
+            ),
+        )
+
+        // Rotate: 100x200 becomes 200x100.
+        state.remapTo(200, 100)
+
+        val remapped = state.elements.first() as StrokeElement
+        assertEquals(100f, remapped.points[0].x, 0.01f) // centre stays the centre
+        assertEquals(50f, remapped.points[0].y, 0.01f)
+        assertEquals(125f, remapped.points[1].x, 0.01f) // still 25px from the centre
+        assertEquals(50f, remapped.points[1].y, 0.01f)
+        assertEquals(10f, remapped.widthPx, 0.01f) // stroke width untouched
+    }
+
+    @Test
+    fun remap_is_a_no_op_without_a_previous_size() {
+        val state = EzCanvasState()
+        state.commit(stroke())
+        val before = state.elements.first()
+        state.remapTo(500, 500)
+        assertEquals(before, state.elements.first())
     }
 
     @Test

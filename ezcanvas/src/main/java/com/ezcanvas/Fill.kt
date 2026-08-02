@@ -2,6 +2,7 @@ package com.ezcanvas
 
 import android.graphics.Bitmap
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import com.ezcanvas.model.FillElement
@@ -17,19 +18,23 @@ private const val FILL_TOLERANCE = 60
  *
  * Runs synchronously on the caller's thread; for very large canvases this is a brief hitch.
  */
-internal fun EzCanvasState.floodFillAt(seed: Offset): FillElement? {
+internal fun EzCanvasState.floodFillAt(
+    seed: Offset,
+    belowCount: Int = elements.size,
+    paint: Color = strokeColor.copy(alpha = strokeAlpha),
+): FillElement? {
     val w = widthPx
     val h = heightPx
     if (w <= 0 || h <= 0) return null
     val sx = seed.x.toInt().coerceIn(0, w - 1)
     val sy = seed.y.toInt().coerceIn(0, h - 1)
 
-    val src = renderElementsBitmap(w, h)
+    val src = renderElementsBitmap(w, h, belowCount)
     val pixels = IntArray(w * h)
     src.getPixels(pixels, 0, w, 0, 0, w, h)
     src.recycle()
 
-    val fillColor = strokeColor.copy(alpha = strokeAlpha).toArgb()
+    val fillColor = paint.toArgb()
     val target = pixels[sy * w + sx]
     if (colorDistance(target, fillColor) <= FILL_TOLERANCE) return null
 
@@ -50,10 +55,32 @@ internal fun EzCanvasState.floodFillAt(seed: Offset): FillElement? {
 
     return FillElement(
         seed = seed,
-        color = strokeColor.copy(alpha = strokeAlpha),
+        color = paint,
         image = outBmp.asImageBitmap(),
         topLeft = Offset(region.minX.toFloat(), region.minY.toFloat()),
     )
+}
+
+/**
+ * Re-run any fill whose pixels were dropped, which happens after a rotation or process recreation
+ * because a filled region is far too large to put in saved state.
+ *
+ * Each fill is replayed against only the elements below it, so a stroke drawn after the fill does
+ * not change the region it originally covered. Called by [EzCanvas] once the canvas has a size.
+ */
+internal fun EzCanvasState.replayPendingFills() {
+    if (widthPx <= 0 || heightPx <= 0) return
+    for (index in elements.indices) {
+        val pending = elements[index] as? FillElement ?: continue
+        if (!pending.isPending) continue
+
+        // The saved colour is passed in rather than assigned to the state, which would otherwise
+        // recolour any selected text through the settings setters.
+        val replayed = floodFillAt(pending.seed, belowCount = index, paint = pending.color)
+
+        // A region that no longer exists leaves the fill pending rather than drawing something wrong.
+        if (replayed != null) elements[index] = replayed
+    }
 }
 
 /** The pixels a flood fill covered, plus the bounding box, in source-bitmap coordinates. */

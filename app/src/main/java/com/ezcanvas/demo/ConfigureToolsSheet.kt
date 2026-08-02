@@ -52,6 +52,7 @@ private val ControlChips: List<Triple<ToolbarControl, String, Grp>> = listOf(
     Triple(ToolbarControl.Background, "Color", Grp.Background),
     Triple(ToolbarControl.Pattern, "Pattern", Grp.Background),
     Triple(ToolbarControl.Image, "Image", Grp.Background),
+    Triple(ToolbarControl.Rename, "Rename", Grp.Actions),
     Triple(ToolbarControl.Undo, "Undo", Grp.Actions),
     Triple(ToolbarControl.Redo, "Redo", Grp.Actions),
     Triple(ToolbarControl.Clear, "Clear", Grp.Actions),
@@ -106,6 +107,7 @@ fun ConfigureToolsSheet(
             }
 
             Spacer(Modifier.height(10.dp))
+
             HorizontalDivider(color = EzColors.Divider)
 
             SectionLabel("TOOLS")

@@ -11,8 +11,62 @@ A configurable, exportable drawing canvas for Android, built entirely with Jetpa
 val state = rememberEzCanvasState()
 Column {
     EzCanvas(state, Modifier.weight(1f).fillMaxWidth())
-    EzToolbar(state)   // a complete toolbar: tools, colors, sliders, shapes, export
+    EzToolbar(state)   // a complete toolbar: tools, colors, sliders, shapes, text, export
 }
+```
+
+## Screenshots
+
+| Canvas | Configure tools | Examples |
+|---|---|---|
+| ![Canvas](docs/images/canvas.png) | ![Configure](docs/images/configure.png) | ![Examples](docs/images/examples.png) |
+
+| Signature Pad | Photo Markup | Neon Art |
+|---|---|---|
+| ![Signature](docs/images/signature.png) | ![Markup](docs/images/markup.png) | ![Neon](docs/images/neon.png) |
+
+## Run the demo
+
+```bash
+git clone https://github.com/RotemBar18/EZCanvas.git
+cd EZCanvas
+./gradlew :app:installDebug     # build and install on a connected device or emulator
+```
+
+Or open the folder in Android Studio and press Run. The demo needs no keys, no accounts and no network.
+
+To build the APK without installing:
+
+```bash
+./gradlew :app:assembleDebug    # output: app/build/outputs/apk/debug/app-debug.apk
+```
+
+To run the library's unit tests:
+
+```bash
+./gradlew :ezcanvas:testDebugUnitTest
+```
+
+## Project structure
+
+```
+EZCanvas/
+├── ezcanvas/                     the library, published to JitPack
+│   └── src/main/java/com/ezcanvas/
+│       ├── EzCanvas.kt           the drawing surface, gestures and rendering
+│       ├── EzCanvasState.kt      hoisted state, history, save and restore
+│       ├── EzToolbar.kt          the configurable toolbar
+│       ├── Dialogs.kt            the text and rename dialogs
+│       ├── Fill.kt               scanline flood fill
+│       ├── Export.kt             Bitmap and PNG rendering
+│       ├── Sharing.kt            share sheet and photo picker
+│       └── model/Models.kt       the element model and enums
+└── app/                          the demo
+    └── src/main/java/com/ezcanvas/demo/
+        ├── PlaygroundScreen.kt   the configurable canvas screen
+        ├── GalleryScreen.kt      the example gallery
+        ├── ConfigureToolsSheet.kt  toggles what the toolbar shows
+        └── examples/             one file per example integration
 ```
 
 ## Why it exists
@@ -21,17 +75,19 @@ Apps keep rebuilding the same drawing surface for signature capture, screenshot 
 
 ## Features
 
-- **Headless Logic Engine**: The state is completely decoupled from the UI. Use our ready-made toolbar or build a 100% custom interface using the `EzCanvasState` API.
+- **Headless logic engine**: the drawing state is fully decoupled from the UI. Use the included `EzToolbar`, or build a completely custom interface on the `EzCanvasState` API.
 - **Brushes**: pen, marker, neon glow, and calligraphy
 - **Eraser** that clears strokes without touching the background
 - **Shapes**: line, square, and circle, where squares and circles lock to 1:1
 - **Line styles**: solid, dotted, dashed, and dash-dot, on the pen and every shape
 - **Paint bucket** that flood fills the enclosed area under your finger
+- **Text** you can place, select, drag, and restyle from the toolbar
 - **Backgrounds**: a solid color, a grid, dots or lined pattern, or your own photo to draw over
+- **Color chooser** with a full spectrum, or lock users to exactly the swatches you supply
 - **History**: undo, redo, and clear, with a capped stroke history
-- **Export and share**: one call writes a PNG and opens the share sheet, plus raw `Bitmap` export
-- **Rotation safe**: the drawing and the settings survive configuration changes
-- **A complete `EzToolbar`** that follows your app's `MaterialTheme`
+- **Export and share**: one call writes a named PNG and opens the share sheet, plus raw `Bitmap` export
+- **Rotation safe**: strokes, shapes, text and fills all survive, keeping their size and staying centered
+- **Every control brings its own UI**, including the text and rename dialogs
 
 ## Install (JitPack)
 
@@ -49,7 +105,7 @@ implementation("com.github.RotemBar18.EZCanvas:ezcanvas:<tag>")
 
 ## Configure what your users get
 
-`EzToolbar` renders only the tools and controls you enable, so the toolbar is the product. You never design or wire one by hand.
+`EzToolbar` renders only the tools and controls you enable, so the toolbar is the product. You never design or wire one by hand, and controls that need a dialog bring their own.
 
 ```kotlin
 // A signature pad: one pen, clear, export. That is the whole UI.
@@ -65,29 +121,76 @@ EzToolbar(state)
 
 | Type | Values |
 |---|---|
-| `Tool` | `PEN`, `MARKER`, `NEON`, `CALLIGRAPHY`, `ERASER`, `LINE`, `SQUARE`, `CIRCLE`, `BUCKET` |
-| `ToolbarControl` | `ToolSelector`, `ColorPicker`, `StrokeWidth`, `Opacity`, `EraserSize`, `Style`, `Background`, `Pattern`, `Image`, `Undo`, `Redo`, `Clear`, `Export` |
+| `Tool` | `PEN`, `MARKER`, `NEON`, `CALLIGRAPHY`, `ERASER`, `LINE`, `SQUARE`, `CIRCLE`, `BUCKET`, `TEXT` |
+| `ToolbarControl` | `ToolSelector`, `ColorPicker`, `StrokeWidth`, `Opacity`, `EraserSize`, `Style`, `Background`, `Pattern`, `Image`, `Rename`, `Undo`, `Redo`, `Clear`, `Export` |
+
+## Drawing
+
+Drag to draw. Tap to place a dot with any brush, or to erase a spot with the eraser. Shapes rubber band between the point you press and the point you release, and squares and circles stay 1:1.
+
+With `TEXT` selected, tapping empty canvas asks for the text and places it. Tapping existing text selects it, and dragging moves it. While text is selected the toolbar shows that text's own color, opacity and size, and changing any of them edits the text instead of the next stroke.
+
+## Make it your own
+
+Size the canvas with a modifier, the same as any composable.
+
+```kotlin
+EzCanvas(state, Modifier.weight(1f).fillMaxWidth())        // fill the space
+EzCanvas(state, Modifier.fillMaxWidth().height(200.dp))    // a fixed signature strip
+```
+
+Pass your own swatches, and the toolbar picks up your `MaterialTheme` colors on its own. Set `allowCustomColor` to false to hold users to exactly the colors you supply.
+
+```kotlin
+EzToolbar(
+    state,
+    palette = listOf(Color(0xFF4F46E5), Color(0xFFFB6F61), Color(0xFF14B8A6)),
+    backgroundPalette = listOf(Color.White, Color(0xFFFFFDE7), Color(0xFF0F172A)),
+    allowCustomColor = false,
+)
+```
+
+Set up the canvas by assigning state properties.
+
+```kotlin
+state.backgroundColor = Color(0xFF0F172A)
+state.backgroundPattern = BackgroundPattern.Grid
+state.tool = Tool.NEON
+state.strokeColor = Color(0xFF06B6D4)
+state.strokeWidthPx = 12f
+state.lineStyle = LineStyle.Dashed
+```
+
+Wrapping the toolbar in a different theme is enough to restyle it, because it takes every color from `MaterialTheme`.
+
+```kotlin
+MaterialTheme(colorScheme = darkColorScheme(primary = Color(0xFF06B6D4))) {
+    EzToolbar(state, enabledTools = setOf(Tool.NEON))
+}
+```
 
 ## Or drive it yourself
 
 The state is hoisted and observable. Skip `EzToolbar` and build your own UI against it.
 
 ```kotlin
-state.tool = Tool.MARKER
-state.strokeColor = Color.Red
-state.strokeWidthPx = 12f
-state.lineStyle = LineStyle.Dashed
-state.undo()
-state.redo()
-state.clear()
-val canExport = !state.isEmpty
+IconButton(onClick = { state.tool = Tool.ERASER }) { Icon(Icons.Filled.Clear, "Eraser") }
+IconButton(onClick = { state.undo() }, enabled = state.canUndo) {
+    Icon(Icons.AutoMirrored.Filled.Undo, "Undo")
+}
+Slider(
+    value = state.strokeWidthPx,
+    onValueChange = { state.strokeWidthPx = it },
+    valueRange = 2f..60f,
+)
 ```
 
 ## Export, share, and image backgrounds
 
-One call renders the drawing and opens the system share sheet. You set up no `FileProvider`, no bitmap I/O, and no image decoding.
+One call renders the drawing and opens the system share sheet. You set up no `FileProvider`, no bitmap I/O, and no image decoding. Exports are named after `state.drawingName`, which you can set in code or let users edit with the `Rename` control.
 
 ```kotlin
+state.drawingName = "signature-order-4821"
 state.shareAsPng(context)                 // render, then open the share sheet
 val bitmap = state.exportBitmap()         // raw Bitmap, or null before layout
 val uri = state.exportPngToCache(context) // shareable Uri via the bundled FileProvider
@@ -99,25 +202,25 @@ Button(onClick = pickBackground) { Text("Background image") }
 
 ## The demo app
 
-The `:app` module is a showcase. Each example is a real product built in about ten lines.
+The `:app` module is a showcase. Each example is a real app screen rather than a bare canvas, and each one is about ten lines of library code.
 
-| Example | What the developer enabled |
+| Example | The integration it shows |
 |---|---|
-| **Signature Pad** | Pen only, clear, export |
-| **Kids Doodle** | Fat brushes, bucket fill, big color swatches |
-| **Painting Studio** | Everything, with `EzToolbar(state)` |
-| **Photo Markup** | Shapes and marker over an uploaded photo, dashed callouts |
-| **Classroom Whiteboard** | Markers and shapes on a grid, undo and redo |
-| **Drawing Game** | One pen, a few colors, fast |
-| **Neon Art** | Glow brush on a dark canvas |
+| **Signature Pad** | A canvas as one field inside a delivery form, with no toolbar at all |
+| **Photo Markup** | Pick a photo from the device, then annotate it with shapes and labels |
+| **Drawing Game** | A timed round with one pen and four colors, so nothing slows the player down |
+| **Classroom Whiteboard** | Markers and shapes on a grid, with undo and redo for live teaching |
+| **Kids Doodle** | Three controls and a locked palette, so there is nothing to get wrong |
+| **Painting Studio** | Everything switched on, with `EzToolbar(state)` |
+| **Neon Art** | The same toolbar wrapped in a dark theme |
 
 ## Architecture
 
-**One serializable element model.** Every drawn item is a `CanvasElement`, either a `StrokeElement`, a `ShapeElement`, or a `FillElement`, held in one ordered list. That single model powers undo and redo, export, and rotation restore. Adding a new element type never touches that machinery.
+**One serializable element model.** Every drawn item is a `CanvasElement`: a `StrokeElement`, a `ShapeElement`, a `TextElement`, or a `FillElement`, held in one ordered list. That single model powers undo and redo, export, and rotation restore. Adding a new element type never touches that machinery.
 
 **Clean module split.** `:ezcanvas` holds the engine and the toolbar. `:app` only consumes the public API, so the drawing internals never leak into app code.
 
-**Theme aware.** `EzToolbar` is built from `MaterialTheme`, so it adopts your app's colors.
+**Theme aware.** `EzToolbar` and its dialogs are built from `MaterialTheme`, so they adopt your app's colors.
 
 ```
 :ezcanvas   EzCanvas, EzToolbar, rememberEzCanvasState(), the element model, export and share
@@ -128,14 +231,6 @@ The `:app` module is a showcase. Each example is a real product built in about t
 
 Jetpack Compose, Kotlin 2.2, AGP 9.1, `compileSdk 36`, `minSdk 28`.
 
-## Roadmap
+## Full documentation
 
-- Stroke width that reacts to drawing speed and stylus pressure
-- Save and restore drawings as JSON
-- Export with a transparent background
-- Select and move shapes after drawing
-- Palm rejection
-
-## License
-
-Released under the MIT License. See [LICENSE](LICENSE).
+[docs/features.md](docs/features.md) documents every property, function, and enum, with usage examples for sizing, theming, custom UI, and export.

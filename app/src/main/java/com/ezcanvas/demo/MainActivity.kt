@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.ezcanvas.demo.examples.ExampleScreen
 import com.ezcanvas.demo.ui.EzColors
 import com.ezcanvas.demo.ui.EzCanvasTheme
 

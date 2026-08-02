@@ -25,20 +25,42 @@ import java.io.FileOutputStream
  */
 
 /**
+ * Turn [raw] into a safe single-segment PNG file name. Names may come from user input, so path
+ * separators and traversal are stripped rather than trusted.
+ */
+private fun safeFileName(raw: String): String {
+    val cleaned = raw.trim()
+        .replace(Regex("""[^A-Za-z0-9 ._-]"""), "_")
+        .take(64)
+        .trim('.', ' ')
+    val base = cleaned.ifBlank { "drawing" }
+    return if (base.endsWith(".png", ignoreCase = true)) base else "$base.png"
+}
+
+/**
  * Render the drawing to a PNG in the app cache and return a shareable [Uri] (backed by the
  * library's bundled FileProvider). Returns null if the canvas has not been laid out yet.
+ *
+ * [fileName] is sanitised, and ".png" is appended when missing.
  */
-fun EzCanvasState.exportPngToCache(context: Context, fileName: String = "drawing.png"): Uri? {
+fun EzCanvasState.exportPngToCache(context: Context, fileName: String = drawingName): Uri? {
     val bitmap = exportBitmap() ?: return null
     val dir = File(context.cacheDir, "ezcanvas_shared").apply { mkdirs() }
-    val file = File(dir, fileName)
+    val file = File(dir, safeFileName(fileName))
     FileOutputStream(file).use { out -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) }
     return FileProvider.getUriForFile(context, "${context.packageName}.ezcanvas.fileprovider", file)
 }
 
-/** Export the drawing to PNG and open the system share sheet. A single call for consumers. */
-fun EzCanvasState.shareAsPng(context: Context, chooserTitle: String = "Share drawing") {
-    val uri = exportPngToCache(context) ?: return
+/**
+ * Export the drawing to PNG and open the system share sheet. A single call for consumers.
+ * Defaults to [EzCanvasState.drawingName]; pass [fileName] to override it for one call.
+ */
+fun EzCanvasState.shareAsPng(
+    context: Context,
+    chooserTitle: String = "Share drawing",
+    fileName: String = drawingName,
+) {
+    val uri = exportPngToCache(context, fileName) ?: return
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "image/png"
         putExtra(Intent.EXTRA_STREAM, uri)

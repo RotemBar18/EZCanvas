@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,12 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.ezcanvas.model.BackgroundPattern
@@ -35,7 +42,9 @@ import com.ezcanvas.model.ShapeElement
 import com.ezcanvas.model.ShapeKind
 import com.ezcanvas.model.StrokeElement
 import com.ezcanvas.model.StrokePoint
+import com.ezcanvas.model.TextElement
 import com.ezcanvas.model.Tool
+import com.ezcanvas.model.isShape
 import com.ezcanvas.model.shapeKind
 import kotlin.math.abs
 import kotlin.math.max
@@ -60,19 +69,63 @@ fun EzCanvas(state: EzCanvasState, modifier: Modifier = Modifier) {
     val livePoints = remember { mutableStateListOf<Offset>() }
     var liveStart by remember { mutableStateOf<Offset?>(null) }
     var liveEnd by remember { mutableStateOf<Offset?>(null) }
+    val textMeasurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    var pendingTextAt by remember { mutableStateOf<Offset?>(null) }
+
+    // Editing colour, opacity or size while text is selected edits that text; the state applies
+    // it in the setters, so no effect is needed here.
+    // A selection only makes sense while the text tool is active.
+    LaunchedEffect(state.tool) {
+        if (state.tool != Tool.TEXT) state.clearSelection()
+    }
 
     Canvas(
         modifier = modifier
             .onSizeChanged { newSize ->
+                // Keep the drawing in the same relative place when the canvas changes shape.
+                state.remapTo(newSize.width, newSize.height)
                 state.widthPx = newSize.width
                 state.heightPx = newSize.height
+                // Fills persist as a seed and a colour, so redraw them now the canvas has a size.
+                state.replayPendingFills()
+            }
+            // Taps and drags are detected separately so a single touch still marks the canvas.
+            .pointerInput(state, state.tool) {
+                detectTapGestures(
+                    onTap = { offset ->
+                        when {
+                            state.tool == Tool.BUCKET -> state.floodFillAt(offset)?.let { state.commit(it) }
+
+                            state.tool == Tool.TEXT -> {
+                                val hit = state.textIndexAt(offset, textMeasurer, density)
+                                // Tapping text selects it; tapping empty canvas starts a new one.
+                                if (hit != null) state.selectTextAt(hit) else pendingTextAt = offset
+                            }
+
+                            // Shapes need a drag to have any size, so a tap does nothing for them.
+                            state.tool.isShape -> Unit
+
+                            else -> state.commit(dotAt(state, offset))
+                        }
+                    },
+                )
             }
             .pointerInput(state, state.tool) {
-                if (state.tool == Tool.BUCKET) {
-                    detectTapGestures(
-                        onTap = { offset -> state.floodFillAt(offset)?.let { state.commit(it) } },
+                if (state.tool == Tool.TEXT) {
+                    // Dragging text moves it, and grabbing a piece selects it first.
+                    detectDragGestures(
+                        onDragStart = { offset ->
+                            state.textIndexAt(offset, textMeasurer, density)?.let { state.selectTextAt(it) }
+                        },
+                        onDrag = { pointerChange, dragAmount ->
+                            if (state.hasSelection) {
+                                state.moveSelectionBy(dragAmount)
+                                pointerChange.consume()
+                            }
+                        },
                     )
-                } else {
+                } else if (state.tool != Tool.BUCKET) {
                     detectDragGestures(
                         onDragStart = { offset ->
                             livePoints.clear()
@@ -96,14 +149,88 @@ fun EzCanvas(state: EzCanvasState, modifier: Modifier = Modifier) {
                 }
             }
     ) {
+        // Reading the revision subscribes this draw to every element change, including edits made
+        // in place such as recolouring the selected text.
+        @Suppress("UNUSED_EXPRESSION")
+        state.revision
+
         drawBackground(state.backgroundColor, state.backgroundImage, state.backgroundPattern)
 
         drawContext.canvas.saveLayer(Rect(0f, 0f, size.width, size.height), Paint())
-        state.elements.forEach { drawElement(it, state.smoothing) }
+        state.elements.forEach { drawElement(it, state.smoothing, textMeasurer) }
         buildLiveElement(state, livePoints.toList(), liveStart, liveEnd)
-            ?.let { drawElement(it, state.smoothing) }
+            ?.let { drawElement(it, state.smoothing, textMeasurer) }
         drawContext.canvas.restore()
+
+        // The selection outline is a screen only affordance, so it never reaches an export.
+        state.selectedIndex?.let { index ->
+            (state.elements.getOrNull(index) as? TextElement)?.let { selected ->
+                val measured = textMeasurer.measure(selected.text, selected.textStyle(this))
+                drawRect(
+                    color = Color(0xFF4F46E5),
+                    topLeft = selected.topLeft - Offset(6f, 6f),
+                    size = Size(measured.size.width + 12f, measured.size.height + 12f),
+                    style = Stroke(2f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 8f))),
+                )
+            }
+        }
     }
+
+    pendingTextAt?.let { at ->
+        EzPromptDialog(
+            title = "Add text",
+            placeholder = "Type something",
+            confirmLabel = "Add",
+            helper = { "Placed where you tapped." },
+            onConfirm = { typed ->
+                state.clearSelection()
+                state.commit(
+                    TextElement(
+                        text = typed,
+                        topLeft = at,
+                        sizePx = state.strokeWidthPx * TextSizeFactor,
+                        color = state.strokeColor,
+                        alpha = state.strokeAlpha,
+                    ),
+                )
+            },
+            onDismiss = { pendingTextAt = null },
+        )
+    }
+}
+
+/**
+ * Index of the topmost [TextElement] whose box contains [point], or null. Later elements are
+ * checked first so the one drawn on top wins.
+ */
+internal fun EzCanvasState.textIndexAt(point: Offset, textMeasurer: TextMeasurer, density: Density): Int? {
+    for (index in elements.indices.reversed()) {
+        val element = elements[index] as? TextElement ?: continue
+        val measured = textMeasurer.measure(element.text, element.textStyle(density))
+        val within = point.x >= element.topLeft.x - TextHitPadding &&
+            point.x <= element.topLeft.x + measured.size.width + TextHitPadding &&
+            point.y >= element.topLeft.y - TextHitPadding &&
+            point.y <= element.topLeft.y + measured.size.height + TextHitPadding
+        if (within) return index
+    }
+    return null
+}
+
+/** A little slack so small text is still easy to grab with a finger. */
+private const val TextHitPadding = 12f
+
+/** A single tap: a one point stroke, rendered as a dot the width of the current brush. */
+private fun dotAt(state: EzCanvasState, at: Offset): StrokeElement {
+    val isEraser = state.tool == Tool.ERASER
+    return StrokeElement(
+        points = listOf(StrokePoint(at.x, at.y)),
+        tool = state.tool,
+        color = state.strokeColor,
+        widthPx = if (isEraser) state.eraserWidthPx else state.strokeWidthPx,
+        alpha = baseAlpha(state.tool) * state.strokeAlpha,
+        // A dot has no length, so a dash pattern would make it vanish.
+        style = LineStyle.Solid,
+    )
 }
 
 /**
@@ -194,16 +321,39 @@ internal fun buildStrokePath(points: List<Offset>, smoothing: Boolean): Path {
     return path
 }
 
-private fun DrawScope.drawElement(element: CanvasElement, smoothing: Boolean) {
+private fun DrawScope.drawElement(element: CanvasElement, smoothing: Boolean, textMeasurer: TextMeasurer) {
     when (element) {
         is StrokeElement -> drawStrokeElement(element, smoothing)
         is ShapeElement -> drawShapeElement(element)
-        is FillElement -> drawImage(element.image, topLeft = element.topLeft, alpha = element.alpha)
+        // A pending fill has no pixels yet; it is skipped until it has been replayed.
+        is FillElement -> element.image?.let { drawImage(it, topLeft = element.topLeft, alpha = element.alpha) }
+        // Colour and alpha are passed at draw time, not baked into the measured style. The
+        // measurer caches layouts, and colour does not affect layout, so a recoloured text would
+        // otherwise keep drawing with the cached paint.
+        is TextElement -> drawText(
+            textLayoutResult = textMeasurer.measure(element.text, element.textStyle(this)),
+            color = element.color,
+            topLeft = element.topLeft,
+            alpha = element.alpha,
+        )
     }
 }
 
+/**
+ * Layout-affecting text style only, so measuring, drawing and export cannot disagree. Colour and
+ * opacity are deliberately excluded: they are applied when drawing. The size is converted through
+ * [density] so it lands on exactly [TextElement.sizePx] pixels, which is what the exporter uses.
+ */
+internal fun TextElement.textStyle(density: Density): TextStyle = TextStyle(
+    fontSize = with(density) { sizePx.toSp() },
+)
+
 private fun DrawScope.drawStrokeElement(stroke: StrokeElement, smoothing: Boolean) {
-    if (stroke.points.size < 2) return
+    if (stroke.points.isEmpty()) return
+    if (stroke.points.size == 1) {
+        drawDot(stroke)
+        return
+    }
     val path = buildStrokePath(stroke.points.map { Offset(it.x, it.y) }, smoothing)
     val dashEffect = dashIntervals(stroke.style, stroke.widthPx)?.let { PathEffect.dashPathEffect(it, 0f) }
     when (stroke.tool) {
@@ -243,6 +393,27 @@ private fun DrawScope.drawStrokeElement(stroke: StrokeElement, smoothing: Boolea
                 style = Stroke(stroke.widthPx, cap = strokeCap, join = StrokeJoin.Round, pathEffect = dashEffect),
             )
         }
+    }
+}
+
+/** A tap: a filled circle. The eraser clears one instead, and neon keeps its halo. */
+private fun DrawScope.drawDot(stroke: StrokeElement) {
+    val center = Offset(stroke.points[0].x, stroke.points[0].y)
+    val radius = stroke.widthPx / 2f
+    when (stroke.tool) {
+        Tool.ERASER -> drawCircle(
+            color = Color.Black,
+            radius = radius,
+            center = center,
+            blendMode = BlendMode.Clear,
+        )
+
+        Tool.NEON -> {
+            drawCircle(stroke.color, radius = radius * 2.4f, center = center, alpha = 0.25f * stroke.alpha)
+            drawCircle(stroke.color, radius = radius, center = center, alpha = stroke.alpha)
+        }
+
+        else -> drawCircle(stroke.color, radius = radius, center = center, alpha = stroke.alpha)
     }
 }
 
