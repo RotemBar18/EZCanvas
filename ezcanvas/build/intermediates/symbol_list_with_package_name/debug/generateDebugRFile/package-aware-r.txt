@@ -1,2 +1,0 @@
-com.ezcanvas
-xml ezcanvas_file_paths
