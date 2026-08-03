@@ -101,7 +101,7 @@ dependencyResolutionManagement {
 }
 
 // module build.gradle.kts
-implementation("com.github.RotemBar18.EZCanvas:ezcanvas:v1.0.0")
+implementation("com.github.RotemBar18.EZCanvas:ezcanvas:1.0.0")
 ```
 
 ## Configure what your users get
