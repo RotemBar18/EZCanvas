@@ -56,7 +56,11 @@ dependencies {
 }
 
 // Publication consumed by JitPack:
-//   implementation("com.github.RotemBar18.EZCanvas:ezcanvas:<version>")
+//   implementation("com.github.RotemBar18:EZCanvas:<version>")
+//
+// The group and artifact below are what the local publication uses. JitPack finds that artifact
+// and then republishes it under the repository coordinate, com.github.<user>:<repo>, because this
+// build publishes a single module. The dependency line above is therefore the one that resolves.
 //
 // JitPack builds a git tag, then looks for an artifact whose version matches the one requested.
 // This value is therefore the release version, and the git tag has to carry the same name. Tagging
