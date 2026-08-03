@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 }
 
 // module build.gradle.kts
-implementation("com.github.RotemBar18.EZCanvas:ezcanvas:<tag>")
+implementation("com.github.RotemBar18.EZCanvas:ezcanvas:v1.0.0")
 ```
 
 Requires Jetpack Compose, Kotlin 2.2, AGP 9.1, `compileSdk 36`, `minSdk 28`. The library depends only on Compose and Material 3. No DI, no networking.
