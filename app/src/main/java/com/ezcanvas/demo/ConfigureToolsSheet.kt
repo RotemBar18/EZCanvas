@@ -35,15 +35,16 @@ import com.ezcanvas.model.Tool
 /** Every tool the demo offers, in display order. */
 val AllTools: Set<Tool> = Tool.entries.toSet()
 
-private val ToolChips: List<Pair<Tool, String>> = listOf(
-    Tool.PEN to "Pen", Tool.MARKER to "Marker", Tool.NEON to "Neon", Tool.CALLIGRAPHY to "Calligraphy",
-    Tool.ERASER to "Eraser", Tool.LINE to "Line", Tool.SQUARE to "Square", Tool.CIRCLE to "Circle",
-    Tool.BUCKET to "Bucket",
-)
+/**
+ * Derived from the enum rather than listed by hand, so a tool added to the library always shows up
+ * here. A hand written list silently lost the text tool once already.
+ */
+private fun Tool.label(): String = name.lowercase().replaceFirstChar { it.uppercase() }
 
 private enum class Grp(val title: String) { Controls("CONTROLS"), Background("BACKGROUND"), Actions("ACTIONS") }
 
 private val ControlChips: List<Triple<ToolbarControl, String, Grp>> = listOf(
+    Triple(ToolbarControl.ToolSelector, "Tool row", Grp.Controls),
     Triple(ToolbarControl.ColorPicker, "Color", Grp.Controls),
     Triple(ToolbarControl.StrokeWidth, "Brush size", Grp.Controls),
     Triple(ToolbarControl.Opacity, "Opacity", Grp.Controls),
@@ -114,8 +115,8 @@ fun ConfigureToolsSheet(
 
             SectionLabel("TOOLS")
             ChipFlow {
-                ToolChips.forEach { (tool, label) ->
-                    ToggleChip(label, tool in tools) { onToggleTool(tool) }
+                Tool.entries.forEach { tool ->
+                    ToggleChip(tool.label(), tool in tools) { onToggleTool(tool) }
                 }
             }
 

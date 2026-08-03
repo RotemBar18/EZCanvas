@@ -22,9 +22,9 @@ Column {
 |---|---|---|
 | ![Canvas](docs/images/canvas.png) | ![Configure](docs/images/configure.png) | ![Examples](docs/images/examples.png) |
 
-| Signature Pad | Photo Markup | Neon Art |
+| Signature Pad | Neon Art | Photo Markup |
 |---|---|---|
-| ![Signature](docs/images/signature.png) | ![Markup](docs/images/markup.png) | ![Neon](docs/images/neon.png) |
+| ![Signature](docs/images/signature.png) | ![Neon](docs/images/neon.png) | ![Markup](docs/images/markup.png) |
 
 ## Run the demo
 
