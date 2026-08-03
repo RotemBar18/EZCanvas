@@ -1,5 +1,6 @@
 # EZCanvas
 
+[![JitPack](https://jitpack.io/v/RotemBar18/EZCanvas.svg)](https://jitpack.io/#RotemBar18/EZCanvas)
 ![Platform](https://img.shields.io/badge/Android-minSdk%2028-3DDC84?logo=android&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-2026.06-4285F4?logo=jetpackcompose&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)
