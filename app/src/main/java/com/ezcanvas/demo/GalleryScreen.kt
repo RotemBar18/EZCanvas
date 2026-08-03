@@ -9,21 +9,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,7 +36,7 @@ import com.ezcanvas.demo.examples.ExampleInfo
 import com.ezcanvas.demo.examples.Examples
 import com.ezcanvas.demo.ui.EzColors
 
-/** Hi-fi Screen 3 — "What you can build": cards that open a working example of the library. */
+/** A grid of the example integrations. Tapping a tile opens that example. */
 @Composable
 fun GalleryScreen(
     onOpenExample: (String) -> Unit,
@@ -63,7 +62,7 @@ fun GalleryScreen(
                     color = EzColors.Ink,
                 )
                 Text(
-                    "Different uses of EZCanvas. Tap Take a look to open one.",
+                    "Tap one to open it.",
                     style = MaterialTheme.typography.bodySmall,
                     color = EzColors.Subtle,
                 )
@@ -80,79 +79,42 @@ fun GalleryScreen(
             }
         }
 
-        LazyColumn(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             items(Examples, key = { it.id }) { info ->
-                ExampleCard(info) { onOpenExample(info.id) }
+                ExampleTile(info) { onOpenExample(info.id) }
             }
         }
     }
 }
 
 @Composable
-private fun ExampleCard(info: ExampleInfo, onOpen: () -> Unit) {
+private fun ExampleTile(info: ExampleInfo, onOpen: () -> Unit) {
     Column(
         Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(18.dp))
             .background(EzColors.Surface)
-            .border(1.dp, EzColors.Divider, RoundedCornerShape(20.dp)),
+            .border(1.dp, EzColors.Divider, RoundedCornerShape(18.dp))
+            .clickable { onOpen() },
     ) {
-        CardPreview(info)
-        Column(Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.Top) {
-                Column(Modifier.weight(1f)) {
-                    Text(info.title, style = MaterialTheme.typography.titleMedium, color = EzColors.Ink)
-                    Text(info.subtitle, style = MaterialTheme.typography.bodySmall, color = EzColors.Subtle)
-                }
-                Box(
-                    Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(EzColors.Ink)
-                        .clickable { onOpen() }
-                        .padding(horizontal = 14.dp, vertical = 8.dp),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        Icon(Icons.Filled.Visibility, null, tint = EzColors.Surface, modifier = Modifier.size(14.dp))
-                        Text("Take a look", color = EzColors.Surface, style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-            }
-            if (info.tags.isNotEmpty()) {
-                Spacer(Modifier.height(12.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    info.tags.forEach { TagChip(it) }
-                }
-            }
+        // A square of the example's own artwork, on its own background.
+        Canvas(
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .background(info.background),
+        ) {
+            info.preview(this)
         }
-    }
-}
-
-@Composable
-private fun TagChip(label: String) {
-    Box(
-        Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, EzColors.Divider, RoundedCornerShape(8.dp))
-            .padding(horizontal = 10.dp, vertical = 5.dp),
-    ) {
-        Text(label, color = EzColors.Muted, style = MaterialTheme.typography.labelMedium)
-    }
-}
-
-@Composable
-private fun CardPreview(info: ExampleInfo) {
-    Canvas(
-        Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .background(info.background),
-    ) {
-        info.preview(this)
+        Text(
+            info.title,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+            color = EzColors.Ink,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+        )
     }
 }
