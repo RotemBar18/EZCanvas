@@ -55,9 +55,15 @@ dependencies {
     testImplementation(libs.junit)
 }
 
-// Publication consumed by JitPack. JitPack supplies the group and version from your
-// GitHub repo + release tag, so consumers add:
-//   implementation("com.github.RotemBar18.EZCanvas:ezcanvas:<tag>")
+// Publication consumed by JitPack:
+//   implementation("com.github.RotemBar18.EZCanvas:ezcanvas:<version>")
+//
+// JitPack builds a git tag, then looks for an artifact whose version matches the one requested.
+// This value is therefore the release version, and the git tag has to carry the same name. Tagging
+// "v1.0.0" while publishing "1.0.0" makes JitPack report the tag build as failed, because it finds
+// nothing under the version it was asked for. Bump this and the tag together.
+val releaseVersion = "1.0.1"
+
 afterEvaluate {
     publishing {
         publications {
@@ -65,7 +71,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.RotemBar18.EZCanvas"
                 artifactId = "ezcanvas"
-                version = "1.0.0"
+                version = releaseVersion
             }
         }
     }
