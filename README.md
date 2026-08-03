@@ -20,11 +20,11 @@ Column {
 
 | Canvas | Configure tools | Examples |
 |---|---|---|
-| ![Canvas](docs/images/canvas.png) | ![Configure](docs/images/configure.png) | ![Examples](docs/images/examples.png) |
+| ![Canvas](docs/images/canvas.jpeg) | ![Configure](docs/images/configure.jpeg) | ![Examples](docs/images/examples.jpeg) |
 
 | Signature Pad | Neon Art | Photo Markup |
 |---|---|---|
-| ![Signature](docs/images/signature.png) | ![Neon](docs/images/neon.png) | ![Markup](docs/images/markup.png) |
+| ![Signature](docs/images/signature.jpeg) | ![Neon](docs/images/neon.jpeg) | ![Markup](docs/images/markup.jpeg) |
 
 ## Run the demo
 
