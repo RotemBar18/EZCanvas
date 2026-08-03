@@ -64,15 +64,59 @@ class EzCanvasStateTest {
         state.commit(stroke())
         state.clear()
         assertTrue(state.isEmpty)
-        assertFalse(state.canUndo)
         assertFalse(state.canRedo)
     }
 
     @Test
-    fun history_is_capped_at_maxHistorySize() {
-        val state = EzCanvasState().apply { maxHistorySize = 3 }
+    fun clear_is_undoable_in_one_step() {
+        val state = EzCanvasState()
+        state.commit(stroke())
+        state.commit(stroke())
+
+        state.clear()
+        assertTrue(state.isEmpty)
+        assertTrue(state.canUndo) // an accidental clear is recoverable
+
+        state.undo()
+        assertEquals(2, state.elements.size) // the whole drawing returns at once
+    }
+
+    @Test
+    fun drawing_again_makes_a_clear_permanent() {
+        val state = EzCanvasState()
+        state.commit(stroke())
+        state.clear()
+        state.commit(stroke())
+
+        state.undo() // undoes the new stroke, not the clear
+        assertTrue(state.isEmpty)
+        assertFalse(state.canUndo)
+    }
+
+    @Test
+    fun undo_is_capped_without_losing_any_of_the_drawing() {
+        val state = EzCanvasState().apply { maxUndoSteps = 2 }
         repeat(5) { state.commit(stroke()) }
+
+        // Everything drawn is still on the canvas; only the reach of undo is limited.
+        assertEquals(5, state.elements.size)
+
+        state.undo()
+        state.undo()
         assertEquals(3, state.elements.size)
+
+        // The third step back is refused, because it would pass the cap.
+        assertFalse(state.canUndo)
+        state.undo()
+        assertEquals(3, state.elements.size)
+    }
+
+    @Test
+    fun undo_is_unlimited_by_default() {
+        val state = EzCanvasState()
+        repeat(40) { state.commit(stroke()) }
+        repeat(40) { state.undo() }
+        assertTrue(state.isEmpty)
     }
 
     @Test

@@ -110,22 +110,48 @@ class EzCanvasState {
 
     // --- History ----------------------------------------------------------
 
-    var maxHistorySize: Int = 200
+    /**
+     * How many steps back [undo] can go. Unlimited by default.
+     *
+     * Set it to 1 for a single step back, or to any number for a shorter history. Older elements
+     * stay on the canvas: this caps how far back the user can step, it never removes their work.
+     */
+    var maxUndoSteps: Int = Int.MAX_VALUE
+
+    /** Elements before this index are permanent, because they fell outside [maxUndoSteps]. */
+    private var undoFloor: Int = 0
+
+    /** What [clear] wiped, so a single undo can put it back. */
+    private var clearedElements: List<CanvasElement>? = null
 
     val isEmpty: Boolean get() = elements.isEmpty()
-    val canUndo: Boolean get() = elements.isNotEmpty()
+    val canUndo: Boolean get() = elements.size > undoFloor || clearedElements != null
     val canRedo: Boolean get() = redoStack.isNotEmpty()
 
     internal fun commit(element: CanvasElement) {
         elements.add(element)
-        if (elements.size > maxHistorySize) elements.removeAt(0)
+        // Raise the floor rather than dropping the element, so the drawing is never damaged.
+        if (maxUndoSteps in 1..<elements.size - undoFloor) {
+            undoFloor = elements.size - maxUndoSteps
+        }
         redoStack.clear()
+        // Drawing again is the point of no return for an undo of clear.
+        clearedElements = null
         invalidateCanvas()
     }
 
     fun undo() {
-        if (elements.isNotEmpty()) {
-            selectedIndex = null
+        selectedIndex = null
+        val cleared = clearedElements
+        if (cleared != null) {
+            // Undoing a clear restores the whole drawing in one step.
+            elements.addAll(cleared)
+            clearedElements = null
+            undoFloor = 0
+            invalidateCanvas()
+            return
+        }
+        if (elements.size > undoFloor) {
             redoStack.add(elements.removeAt(elements.lastIndex))
             invalidateCanvas()
         }
@@ -194,9 +220,13 @@ class EzCanvasState {
         invalidateCanvas()
     }
 
+    /** Wipe the canvas. A single [undo] brings the whole drawing back. */
     fun clear() {
+        if (elements.isEmpty()) return
+        clearedElements = elements.toList()
         elements.clear()
         redoStack.clear()
+        undoFloor = 0
         selectedIndex = null
         invalidateCanvas()
     }

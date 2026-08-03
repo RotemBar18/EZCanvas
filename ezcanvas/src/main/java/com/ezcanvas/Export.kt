@@ -25,12 +25,15 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Render the current drawing (background + every element) into a new [Bitmap], at the size the
- * canvas was last laid out. Returns null if the canvas has not been measured yet.
+ * Render the current drawing into a new [Bitmap], at the size the canvas was last laid out.
+ * Returns null if the canvas has not been measured yet.
  *
  * Rendering mirrors what [EzCanvas] shows on screen, including the eraser, shapes and dash styles.
+ *
+ * Set [transparentBackground] to leave out the background colour, image and pattern, so only what
+ * was drawn is exported. A signature then drops onto a document without a white box behind it.
  */
-fun EzCanvasState.exportBitmap(): Bitmap? {
+fun EzCanvasState.exportBitmap(transparentBackground: Boolean = false): Bitmap? {
     val w = widthPx
     val h = heightPx
     if (w <= 0 || h <= 0) return null
@@ -38,16 +41,18 @@ fun EzCanvasState.exportBitmap(): Bitmap? {
     val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
     val canvas = AndroidCanvas(bitmap)
 
-    canvas.drawColor(backgroundColor.toArgb())
-    backgroundImage?.let { img ->
-        canvas.drawBitmap(
-            img.asAndroidBitmap(),
-            null,
-            RectF(0f, 0f, w.toFloat(), h.toFloat()),
-            null,
-        )
+    if (!transparentBackground) {
+        canvas.drawColor(backgroundColor.toArgb())
+        backgroundImage?.let { img ->
+            canvas.drawBitmap(
+                img.asAndroidBitmap(),
+                null,
+                RectF(0f, 0f, w.toFloat(), h.toFloat()),
+                null,
+            )
+        }
+        drawPatternAndroid(canvas, w, h, backgroundPattern)
     }
-    drawPatternAndroid(canvas, w, h, backgroundPattern)
 
     val layer = canvas.saveLayer(0f, 0f, w.toFloat(), h.toFloat(), null)
     for (element in elements) drawElementAndroid(canvas, element, smoothing)

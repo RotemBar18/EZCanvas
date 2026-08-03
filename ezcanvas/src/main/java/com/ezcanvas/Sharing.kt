@@ -41,10 +41,15 @@ private fun safeFileName(raw: String): String {
  * Render the drawing to a PNG in the app cache and return a shareable [Uri] (backed by the
  * library's bundled FileProvider). Returns null if the canvas has not been laid out yet.
  *
- * [fileName] is sanitised, and ".png" is appended when missing.
+ * [fileName] is sanitised, and ".png" is appended when missing. Set [transparentBackground] to
+ * export only what was drawn, with no background behind it.
  */
-fun EzCanvasState.exportPngToCache(context: Context, fileName: String = drawingName): Uri? {
-    val bitmap = exportBitmap() ?: return null
+fun EzCanvasState.exportPngToCache(
+    context: Context,
+    fileName: String = drawingName,
+    transparentBackground: Boolean = false,
+): Uri? {
+    val bitmap = exportBitmap(transparentBackground) ?: return null
     val dir = File(context.cacheDir, "ezcanvas_shared").apply { mkdirs() }
     val file = File(dir, safeFileName(fileName))
     FileOutputStream(file).use { out -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) }
@@ -53,14 +58,16 @@ fun EzCanvasState.exportPngToCache(context: Context, fileName: String = drawingN
 
 /**
  * Export the drawing to PNG and open the system share sheet. A single call for consumers.
- * Defaults to [EzCanvasState.drawingName]; pass [fileName] to override it for one call.
+ * Defaults to [EzCanvasState.drawingName]; pass [fileName] to override it for one call. Set
+ * [transparentBackground] to share only what was drawn, with no background behind it.
  */
 fun EzCanvasState.shareAsPng(
     context: Context,
     chooserTitle: String = "Share drawing",
     fileName: String = drawingName,
+    transparentBackground: Boolean = false,
 ) {
-    val uri = exportPngToCache(context, fileName) ?: return
+    val uri = exportPngToCache(context, fileName, transparentBackground) ?: return
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "image/png"
         putExtra(Intent.EXTRA_STREAM, uri)

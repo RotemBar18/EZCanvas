@@ -87,6 +87,9 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
     var controls by remember { mutableStateOf(DefaultToolbarControls) }
     var showConfig by remember { mutableStateOf(false) }
     var renaming by remember { mutableStateOf(false) }
+    // An export option, so it belongs to the app rather than to the toolbar.
+    var transparentExport by rememberSaveable { mutableStateOf(false) }
+    val share = { state.shareAsPng(context, transparentBackground = transparentExport) }
 
     var initialized by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
@@ -117,6 +120,7 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
                     enabledTools = tools,
                     palette = BrushSwatches,
                     backgroundPalette = BackgroundSwatches,
+                    onExport = share,
                 )
             }
         },
@@ -129,7 +133,7 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
                 showShare = ToolbarControl.Export in controls,
                 onRename = { renaming = true },
                 onExamples = onOpenExamples,
-                onShare = { state.shareAsPng(context) },
+                onShare = share,
                 onConfigure = { showConfig = true },
                 modifier = Modifier
                     .align(Alignment.TopStart)
@@ -144,8 +148,10 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
         ConfigureToolsSheet(
             tools = tools,
             controls = controls,
+            transparentExport = transparentExport,
             onToggleTool = { tool -> tools = if (tool in tools) tools - tool else tools + tool },
             onToggleControl = { control -> controls = if (control in controls) controls - control else controls + control },
+            onToggleTransparentExport = { transparentExport = !transparentExport },
             onDismiss = { showConfig = false },
         )
     }

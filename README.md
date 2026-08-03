@@ -84,8 +84,8 @@ Apps keep rebuilding the same drawing surface for signature capture, screenshot 
 - **Text** you can place, select, drag, and restyle from the toolbar
 - **Backgrounds**: a solid color, a grid, dots or lined pattern, or your own photo to draw over
 - **Color chooser** with a full spectrum, or lock users to exactly the swatches you supply
-- **History**: undo, redo, and clear, with a capped stroke history
-- **Export and share**: one call writes a named PNG and opens the share sheet, plus raw `Bitmap` export
+- **History**: undo and redo with no limit by default, a developer settable cap, and an undoable clear
+- **Export and share**: one call writes a named PNG and opens the share sheet, optionally with a transparent background, plus raw `Bitmap` export
 - **Rotation safe**: strokes, shapes, text and fills all survive, keeping their size and staying centered
 - **Every control brings its own UI**, including the text and rename dialogs
 
@@ -233,4 +233,5 @@ Jetpack Compose, Kotlin 2.2, AGP 9.1, `compileSdk 36`, `minSdk 28`.
 
 ## Full documentation
 
-[docs/features.md](docs/features.md) documents every property, function, and enum, with usage examples for sizing, theming, custom UI, and export.
+- [docs/features.md](docs/features.md) documents every property, function and enum, with usage examples for sizing, theming, custom UI and export.
+- [docs/decisions.md](docs/decisions.md) covers why the library is built this way, what was considered instead, the edge cases it handles, and the ceilings it still has.

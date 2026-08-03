@@ -127,10 +127,11 @@ internal fun SignaturePadExample(onBack: () -> Unit) = ExampleScaffold(
         ) { Text(if (signed) "Delivery confirmed" else "Confirm delivery") }
 
         if (signed) {
+            // Transparent, so the signature drops onto a document without a white box behind it.
             TextButton(
-                onClick = { state.shareAsPng(context) },
+                onClick = { state.shareAsPng(context, transparentBackground = true) },
                 modifier = Modifier.fillMaxWidth(),
-            ) { Text("Share the signed PNG") }
+            ) { Text("Share the signature") }
         }
     }
 }

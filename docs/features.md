@@ -126,7 +126,7 @@ Everything the toolbar does goes through these members, so anything the toolbar 
 | `strokeAlpha` | `Float` | `1f` | Opacity, 0 to 1 |
 | `eraserWidthPx` | `Float` | `40f` | Eraser size in pixels |
 | `lineStyle` | `LineStyle` | `Solid` | Dash style for the pen and every shape |
-| `smoothing` | `Boolean` | `true` | Smooth freehand strokes with quadratic curves |
+| `smoothing` | `Boolean` | `true` | Curves through the touch points. Set to false for exact point to point strokes. A developer level setting with no toolbar control, because turning it off only makes freehand look worse |
 | `drawingName` | `String` | `"drawing"` | Names the drawing and the exported file |
 
 ### Canvas and background
@@ -143,21 +143,29 @@ Everything the toolbar does goes through these members, so anything the toolbar 
 |---|---|---|
 | `undo()` | function | Step back one element |
 | `redo()` | function | Step forward one element |
-| `clear()` | function | Remove everything |
+| `clear()` | function | Remove everything. A single `undo()` brings it all back |
 | `clearSelection()` | function | Drop the current text selection |
 | `canUndo` | `Boolean` | Whether there is anything to undo |
 | `canRedo` | `Boolean` | Whether there is anything to redo |
 | `isEmpty` | `Boolean` | Whether anything has been drawn |
 | `hasSelection` | `Boolean` | Whether a piece of text is selected |
-| `maxHistorySize` | `Int` | Cap on stored elements, default 200 |
+| `maxUndoSteps` | `Int` | How many steps back `undo()` can go, unlimited by default |
+
+**Limiting undo.** `maxUndoSteps` decides how far back the user can step. It never removes anything from the drawing: older elements simply become permanent.
+
+```kotlin
+state.maxUndoSteps = 1   // a single step back, for a form field
+state.maxUndoSteps = 10  // a short history
+                         // leave it alone for unlimited
+```
 
 ### Export
 
 | Function | Returns | Description |
 |---|---|---|
-| `exportBitmap()` | `Bitmap?` | Renders the drawing, or null before the canvas is laid out |
-| `exportPngToCache(context, fileName)` | `Uri?` | Writes a PNG and returns a shareable Uri |
-| `shareAsPng(context, chooserTitle, fileName)` | `Unit` | Renders a PNG and opens the system share sheet |
+| `exportBitmap(transparentBackground)` | `Bitmap?` | Renders the drawing, or null before the canvas is laid out |
+| `exportPngToCache(context, fileName, transparentBackground)` | `Uri?` | Writes a PNG and returns a shareable Uri |
+| `shareAsPng(context, chooserTitle, fileName, transparentBackground)` | `Unit` | Renders a PNG and opens the system share sheet |
 | `loadBackgroundImageFromUri(context, uri)` | `Boolean` | Suspending. Decodes an image and sets it as the background |
 
 ## Enums
@@ -318,6 +326,15 @@ EzToolbar(state, controls = setOf(ToolbarControl.Clear, ToolbarControl.Export))
 
 Exports contain the background, the strokes, the shapes, the fills and the text, flattened into one image. The selection outline is a screen affordance and never appears in an export.
 
+Pass `transparentBackground = true` to leave out the background colour, image and pattern, so only what was drawn is exported. A signature then drops onto a document with nothing behind it.
+
+```kotlin
+state.shareAsPng(context, transparentBackground = true)
+val cutout = state.exportBitmap(transparentBackground = true)
+```
+
+Export is PNG only. That is deliberate: PNG is lossless and supports transparency, while JPEG is lossy and leaves visible ringing artefacts around the sharp high contrast edges that a pen stroke is made of.
+
 ## Your own UI
 
 `EzToolbar` chooses **which** controls appear, through `controls`, `enabledTools`, `palette` and `allowCustomColor`. It does not expose its own sizing, spacing or button shapes, and it always follows the host `MaterialTheme`. When you need a different look, for example oversized buttons for a children's app, do not try to restyle the bar. Skip it and build the UI yourself.
@@ -400,12 +417,11 @@ The library is one module, `:ezcanvas`, holding the canvas, the toolbar, the ele
 
 ## Limits
 
-Stated plainly, so nothing surprises you in production.
+Stated plainly, so nothing surprises you in production. [decisions.md](decisions.md) explains the reasoning behind each one.
 
 - Selection and dragging apply to text only. Strokes and shapes cannot be moved after they are drawn.
 - `backgroundImage` is stretched to fill the canvas. Size the canvas to the image's aspect ratio when that matters.
 - The background image is not restored after rotation. Bucket fills are, by replaying them.
 - Flood fill runs on the calling thread, which is a brief pause on a very large canvas.
 - A dashed or open outline does not contain a bucket fill, in the same way as any paint program.
-- Export is PNG. There is no JPEG, WebP or transparent background export.
-- `clear()` is not undoable.
+- Memory grows with the drawing, and unevenly. A stroke of 200 points costs a few KB, so a thousand strokes is a handful of MB. A bucket fill stores pixels, so a large one can reach several MB on its own. Many large fills on a big screen are the realistic way to run out of memory. There is deliberately no cap on how much a user may draw, because any such cap has to delete their work to take effect.

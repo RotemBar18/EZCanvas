@@ -68,8 +68,10 @@ private val ControlChips: List<Triple<ToolbarControl, String, Grp>> = listOf(
 fun ConfigureToolsSheet(
     tools: Set<Tool>,
     controls: Set<ToolbarControl>,
+    transparentExport: Boolean,
     onToggleTool: (Tool) -> Unit,
     onToggleControl: (ToolbarControl) -> Unit,
+    onToggleTransparentExport: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -125,6 +127,22 @@ fun ConfigureToolsSheet(
                     }
                 }
             }
+
+            // An export option rather than a toolbar control, so it is the app's own setting.
+            SectionLabel("EXPORT OPTIONS")
+            ChipFlow {
+                ToggleChip("Transparent background", transparentExport) { onToggleTransparentExport() }
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                if (transparentExport) {
+                    "Exports contain only what was drawn, with no background behind it."
+                } else {
+                    "Exports contain the background colour, image and pattern."
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = EzColors.Subtle,
+            )
         }
     }
 }
