@@ -18,7 +18,7 @@ data class ExampleInfo(
 )
 
 /**
- * Seven integrations, ordered from a canvas embedded in a form up to a full screen app.
+ * Seven integrations, ordered so the three that best show the range come first.
  * Each one lives in its own file next to this list.
  */
 val Examples: List<ExampleInfo> = listOf(
@@ -29,6 +29,14 @@ val Examples: List<ExampleInfo> = listOf(
         tags = listOf("No toolbar", "Canvas only"),
         background = Color.White,
         preview = { signaturePreview() },
+    ),
+    ExampleInfo(
+        id = "neon",
+        title = "Neon Art",
+        subtitle = "Glow on black",
+        tags = listOf("Dark theme", "Neon brush"),
+        background = Color(0xFF0F172A),
+        preview = { neonPreview() },
     ),
     ExampleInfo(
         id = "markup",
@@ -69,14 +77,6 @@ val Examples: List<ExampleInfo> = listOf(
         tags = listOf("Every brush", "Every control"),
         background = Color(0xFFFCFBF8),
         preview = { paintingPreview() },
-    ),
-    ExampleInfo(
-        id = "neon",
-        title = "Neon Art",
-        subtitle = "Glow on black",
-        tags = listOf("Dark theme", "Neon brush"),
-        background = Color(0xFF0F172A),
-        preview = { neonPreview() },
     ),
 )
 

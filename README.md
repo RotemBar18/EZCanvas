@@ -208,12 +208,12 @@ The `:app` module is a showcase. Each example is a real app screen rather than a
 | Example | The integration it shows |
 |---|---|
 | **Signature Pad** | A canvas as one field inside a delivery form, with no toolbar at all |
+| **Neon Art** | The same toolbar wrapped in a dark theme, so it restyles itself |
 | **Photo Markup** | Pick a photo from the device, then annotate it with shapes and labels |
 | **Drawing Game** | A timed round with one pen and four colors, so nothing slows the player down |
 | **Classroom Whiteboard** | Markers and shapes on a grid, with undo and redo for live teaching |
 | **Kids Doodle** | Three controls and a locked palette, so there is nothing to get wrong |
 | **Painting Studio** | Everything switched on, with `EzToolbar(state)` |
-| **Neon Art** | The same toolbar wrapped in a dark theme |
 
 ## Architecture
 
