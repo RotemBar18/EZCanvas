@@ -16,6 +16,15 @@ Column {
 }
 ```
 
+`EzToolbar` has no internal scrolling, so with every control switched on it is taller than the
+space under a canvas on a phone. Enable a subset, or give it a bounded scrolling box:
+
+```kotlin
+Box(Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState())) {
+    EzToolbar(state)
+}
+```
+
 ## Screenshots
 
 | Canvas | Configure tools | Examples |
