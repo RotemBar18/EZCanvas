@@ -386,10 +386,38 @@ class EzCanvasState {
     }
 }
 
-/** Create and remember an [EzCanvasState] that survives configuration changes. */
+/**
+ * Create and remember an [EzCanvasState] that survives configuration changes.
+ *
+ * The parameters are starting values, applied only when the state is first created. After a
+ * rotation the saved state wins, so a name the user typed or a colour they picked is kept. Setting
+ * these here rather than assigning properties afterwards is what makes that true: an assignment in
+ * a `LaunchedEffect` runs again when the activity is recreated and would overwrite their choices.
+ */
 @Composable
-fun rememberEzCanvasState(): EzCanvasState =
-    rememberSaveable(saver = EzCanvasState.Saver) { EzCanvasState() }
+fun rememberEzCanvasState(
+    tool: Tool = Tool.PEN,
+    strokeColor: Color = Color.Black,
+    strokeWidthPx: Float = 10f,
+    strokeAlpha: Float = 1f,
+    eraserWidthPx: Float = 40f,
+    lineStyle: LineStyle = LineStyle.Solid,
+    backgroundColor: Color = Color.White,
+    backgroundPattern: BackgroundPattern = BackgroundPattern.None,
+    drawingName: String = "drawing",
+): EzCanvasState = rememberSaveable(saver = EzCanvasState.Saver) {
+    EzCanvasState().also {
+        it.tool = tool
+        it.strokeColor = strokeColor
+        it.strokeWidthPx = strokeWidthPx
+        it.strokeAlpha = strokeAlpha
+        it.eraserWidthPx = eraserWidthPx
+        it.lineStyle = lineStyle
+        it.backgroundColor = backgroundColor
+        it.backgroundPattern = backgroundPattern
+        it.drawingName = drawingName
+    }
+}
 
 // --- Element (de)serialization for the Saver ------------------------------
 // Each element is a FloatArray whose first slot tags the type, so new element types are

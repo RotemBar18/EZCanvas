@@ -57,17 +57,9 @@ internal fun SignaturePadExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = EzColors.AppBg,
 ) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(strokeWidthPx = 5f, drawingName = "signature-4821")
     val context = LocalContext.current
     var signed by remember { mutableStateOf(false) }
-
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.strokeWidthPx = 5f
-        state.drawingName = "signature-4821"
-    }
 
     Column(
         Modifier

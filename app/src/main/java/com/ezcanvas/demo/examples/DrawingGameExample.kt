@@ -59,18 +59,11 @@ internal fun DrawingGameExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = EzColors.AppBg,
 ) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(strokeColor = GamePalette.first(), strokeWidthPx = 8f)
     var round by rememberSaveable { mutableIntStateOf(0) }
     var secondsLeft by remember { mutableIntStateOf(RoundSeconds) }
     val word = Words[round % Words.size]
 
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.strokeColor = GamePalette.first()
-        state.strokeWidthPx = 8f
-    }
 
     // Restart the clock whenever a new round begins.
     LaunchedEffect(round) {

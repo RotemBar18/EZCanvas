@@ -43,18 +43,13 @@ internal fun KidsDoodleExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = Color(0xFFFFFDE7),
 ) {
-    val state = rememberEzCanvasState()
-
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.backgroundColor = Color(0xFFFFFDE7)
-        state.backgroundPattern = BackgroundPattern.Dots
-        state.strokeColor = KidsPalette.first()
-        state.strokeWidthPx = 26f
-        state.drawingName = "my-drawing"
-    }
+    val state = rememberEzCanvasState(
+        strokeColor = KidsPalette.first(),
+        strokeWidthPx = 26f,
+        backgroundColor = Color(0xFFFFFDE7),
+        backgroundPattern = BackgroundPattern.Dots,
+        drawingName = "my-drawing",
+    )
 
     EzCanvas(
         state,

@@ -51,16 +51,11 @@ internal fun PaintingStudioExample(onBack: () -> Unit) = ExampleScaffold(
     subtitle = "EzCanvas + EzToolbar, nothing switched off",
     onBack = onBack,
 ) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(
+        strokeColor = Color(0xFF6366F1),
+        drawingName = "painting",
+    )
     val context = LocalContext.current
-
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.strokeColor = Color(0xFF6366F1)
-        state.drawingName = "painting"
-    }
 
     Box(Modifier.weight(1f).fillMaxWidth()) {
         EzCanvas(state, Modifier.fillMaxSize())

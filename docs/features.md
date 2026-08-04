@@ -63,6 +63,20 @@ Creates the state that drives the canvas and the toolbar. It survives configurat
 val state = rememberEzCanvasState()
 ```
 
+Set the starting tool, colour, size, background and name here rather than assigning properties afterwards.
+
+```kotlin
+val state = rememberEzCanvasState(
+    tool = Tool.NEON,
+    strokeColor = Color(0xFF06B6D4),
+    strokeWidthPx = 12f,
+    backgroundColor = Color(0xFF0F172A),
+    drawingName = "neon-art",
+)
+```
+
+These are starting values, applied only when the state is first created. After a rotation the saved state wins, so a name the user typed or a colour they picked is kept. That is the reason to use them: assigning the same properties from a `LaunchedEffect` looks equivalent, but that block runs again when the activity is recreated and overwrites the user's choices.
+
 ### `EzCanvas(state, modifier)`
 
 The drawing surface. It takes the size its modifier gives it.

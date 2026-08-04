@@ -45,18 +45,13 @@ internal fun NeonArtExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = NeonInk,
 ) {
-    val state = rememberEzCanvasState()
-
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.backgroundColor = Color(0xFF0F172A)
-        state.tool = Tool.NEON
-        state.strokeColor = NeonPalette.first()
-        state.strokeWidthPx = 12f
-        state.drawingName = "neon-art"
-    }
+    val state = rememberEzCanvasState(
+        tool = Tool.NEON,
+        strokeColor = NeonPalette.first(),
+        strokeWidthPx = 12f,
+        backgroundColor = Color(0xFF0F172A),
+        drawingName = "neon-art",
+    )
 
     EzCanvas(
         state,

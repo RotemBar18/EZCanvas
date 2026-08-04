@@ -59,18 +59,14 @@ internal fun WhiteboardExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = EzColors.AppBg,
 ) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(
+        tool = Tool.MARKER,
+        strokeWidthPx = 10f,
+        backgroundPattern = BackgroundPattern.Grid,
+    )
     val context = LocalContext.current
     var board by rememberSaveable { mutableIntStateOf(1) }
 
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.backgroundPattern = BackgroundPattern.Grid
-        state.tool = Tool.MARKER
-        state.strokeWidthPx = 10f
-    }
     LaunchedEffect(board) { state.drawingName = "lesson-4-board-$board" }
 
     Row(

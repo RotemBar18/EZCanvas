@@ -80,7 +80,11 @@ import com.ezcanvas.model.Tool
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaygroundScreen(onOpenExamples: () -> Unit) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(
+        strokeColor = EzColors.Primary,
+        strokeWidthPx = 6f,
+        drawingName = "Untitled",
+    )
     val context = LocalContext.current
     val scaffoldState = rememberBottomSheetScaffoldState()
     var tools by remember { mutableStateOf(AllTools) }
@@ -91,15 +95,6 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
     var transparentExport by rememberSaveable { mutableStateOf(false) }
     val share = { state.shareAsPng(context, transparentBackground = transparentExport) }
 
-    var initialized by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (!initialized) {
-            state.strokeColor = EzColors.Primary
-            state.strokeWidthPx = 6f
-            state.drawingName = "Untitled"
-            initialized = true
-        }
-    }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,

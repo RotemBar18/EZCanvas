@@ -70,20 +70,16 @@ internal fun PhotoMarkupExample(onBack: () -> Unit) = ExampleScaffold(
     onBack = onBack,
     background = EzColors.AppBg,
 ) {
-    val state = rememberEzCanvasState()
+    val state = rememberEzCanvasState(
+        tool = Tool.CIRCLE,
+        strokeColor = MarkupPalette.first(),
+        strokeWidthPx = 6f,
+        drawingName = "markup",
+    )
     val context = LocalContext.current
     val pickPhoto = rememberBackgroundImagePicker(state)
     val photo = state.backgroundImage
 
-    var configured by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (configured) return@LaunchedEffect
-        configured = true
-        state.strokeColor = MarkupPalette.first()
-        state.tool = Tool.CIRCLE
-        state.strokeWidthPx = 6f
-        state.drawingName = "markup"
-    }
 
     Column(
         Modifier
