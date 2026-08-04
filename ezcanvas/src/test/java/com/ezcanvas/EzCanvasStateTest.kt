@@ -244,6 +244,32 @@ class EzCanvasStateTest {
     }
 
     @Test
+    fun remap_keeps_the_drawing_on_screen_when_the_canvas_gets_much_shorter() {
+        val state = EzCanvasState()
+        state.widthPx = 1000
+        state.heightPx = 1400
+        // A small drawing near the middle of a tall canvas.
+        state.commit(
+            StrokeElement(
+                points = listOf(StrokePoint(500f, 600f), StrokePoint(600f, 800f)),
+                tool = Tool.PEN,
+                color = Color.Black,
+                widthPx = 10f,
+            ),
+        )
+
+        // Rotate into a wide, very short canvas, which is what a tall toolbar leaves behind.
+        state.remapTo(2200, 300)
+
+        // Centring alone would push it off the top; it has to stay within the new canvas.
+        val points = (state.elements.first() as StrokeElement).points
+        points.forEach {
+            assertTrue("y=${it.y} left the canvas", it.y >= 0f && it.y <= 300f)
+            assertTrue("x=${it.x} left the canvas", it.x >= 0f && it.x <= 2200f)
+        }
+    }
+
+    @Test
     fun remap_is_a_no_op_without_a_previous_size() {
         val state = EzCanvasState()
         state.commit(stroke())

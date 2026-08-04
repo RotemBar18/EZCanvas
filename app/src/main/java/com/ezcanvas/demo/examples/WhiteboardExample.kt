@@ -20,8 +20,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,9 +61,12 @@ internal fun WhiteboardExample(onBack: () -> Unit) = ExampleScaffold(
 ) {
     val state = rememberEzCanvasState()
     val context = LocalContext.current
-    var board by remember { mutableIntStateOf(1) }
+    var board by rememberSaveable { mutableIntStateOf(1) }
 
+    var configured by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (configured) return@LaunchedEffect
+        configured = true
         state.backgroundPattern = BackgroundPattern.Grid
         state.tool = Tool.MARKER
         state.strokeWidthPx = 10f

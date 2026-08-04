@@ -23,7 +23,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -71,7 +75,10 @@ internal fun PhotoMarkupExample(onBack: () -> Unit) = ExampleScaffold(
     val pickPhoto = rememberBackgroundImagePicker(state)
     val photo = state.backgroundImage
 
+    var configured by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (configured) return@LaunchedEffect
+        configured = true
         state.strokeColor = MarkupPalette.first()
         state.tool = Tool.CIRCLE
         state.strokeWidthPx = 6f

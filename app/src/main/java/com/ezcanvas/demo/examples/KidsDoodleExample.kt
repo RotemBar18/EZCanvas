@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -41,7 +45,10 @@ internal fun KidsDoodleExample(onBack: () -> Unit) = ExampleScaffold(
 ) {
     val state = rememberEzCanvasState()
 
+    var configured by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (configured) return@LaunchedEffect
+        configured = true
         state.backgroundColor = Color(0xFFFFFDE7)
         state.backgroundPattern = BackgroundPattern.Dots
         state.strokeColor = KidsPalette.first()

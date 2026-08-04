@@ -17,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,11 +60,14 @@ internal fun DrawingGameExample(onBack: () -> Unit) = ExampleScaffold(
     background = EzColors.AppBg,
 ) {
     val state = rememberEzCanvasState()
-    var round by remember { mutableIntStateOf(0) }
+    var round by rememberSaveable { mutableIntStateOf(0) }
     var secondsLeft by remember { mutableIntStateOf(RoundSeconds) }
     val word = Words[round % Words.size]
 
+    var configured by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (configured) return@LaunchedEffect
+        configured = true
         state.strokeColor = GamePalette.first()
         state.strokeWidthPx = 8f
     }

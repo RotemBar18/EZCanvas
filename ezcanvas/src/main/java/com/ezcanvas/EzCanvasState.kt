@@ -11,6 +11,7 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
@@ -220,6 +221,35 @@ class EzCanvasState {
         invalidateCanvas()
     }
 
+    /** The box every element sits inside, in canvas pixels, or null when nothing is drawn. */
+    private fun drawingBounds(): Rect? {
+        var left = Float.MAX_VALUE
+        var top = Float.MAX_VALUE
+        var right = -Float.MAX_VALUE
+        var bottom = -Float.MAX_VALUE
+
+        fun include(x: Float, y: Float) {
+            if (x < left) left = x
+            if (x > right) right = x
+            if (y < top) top = y
+            if (y > bottom) bottom = y
+        }
+
+        for (element in elements) {
+            when (element) {
+                is StrokeElement -> element.points.forEach { include(it.x, it.y) }
+                is ShapeElement -> {
+                    include(element.start.x, element.start.y)
+                    include(element.end.x, element.end.y)
+                }
+                is TextElement -> include(element.topLeft.x, element.topLeft.y)
+                is FillElement -> include(element.topLeft.x, element.topLeft.y)
+            }
+        }
+        if (left > right) return null
+        return Rect(left, top, right, bottom)
+    }
+
     /** Wipe the canvas. A single [undo] brings the whole drawing back. */
     fun clear() {
         if (elements.isEmpty()) return
@@ -247,8 +277,20 @@ class EzCanvasState {
         if (oldWidth == newWidth && oldHeight == newHeight) return
         if (elements.isEmpty() && redoStack.isEmpty()) return
 
-        val shiftX = (newWidth - oldWidth) / 2f
-        val shiftY = (newHeight - oldHeight) / 2f
+        var shiftX = (newWidth - oldWidth) / 2f
+        var shiftY = (newHeight - oldHeight) / 2f
+
+        // Centring alone pushes work out of sight when the canvas gets much shorter, which is
+        // what rotating into landscape does. If the drawing still fits, nudge it back in.
+        val bounds = drawingBounds()
+        if (bounds != null) {
+            if (bounds.width <= newWidth) {
+                shiftX = shiftX.coerceIn(-bounds.left, newWidth - bounds.right)
+            }
+            if (bounds.height <= newHeight) {
+                shiftY = shiftY.coerceIn(-bounds.top, newHeight - bounds.bottom)
+            }
+        }
         if (shiftX == 0f && shiftY == 0f) return
 
         fun mapPoint(x: Float, y: Float) = Offset(x + shiftX, y + shiftY)

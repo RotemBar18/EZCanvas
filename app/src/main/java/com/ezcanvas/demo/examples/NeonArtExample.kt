@@ -6,7 +6,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -43,7 +47,10 @@ internal fun NeonArtExample(onBack: () -> Unit) = ExampleScaffold(
 ) {
     val state = rememberEzCanvasState()
 
+    var configured by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (configured) return@LaunchedEffect
+        configured = true
         state.backgroundColor = Color(0xFF0F172A)
         state.tool = Tool.NEON
         state.strokeColor = NeonPalette.first()
