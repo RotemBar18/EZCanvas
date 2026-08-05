@@ -248,5 +248,5 @@ Jetpack Compose, Kotlin 2.2, AGP 9.1, `compileSdk 36`, `minSdk 28`.
 
 ## Full documentation
 
-- [docs/features.md](docs/features.md) documents every property, function and enum, with usage examples for sizing, theming, custom UI and export.
+- [docs/documentation.md](docs/documentation.md) is the full guide: concepts, a step by step integration, every public type and function, the behaviour you can rely on, the limits, and a troubleshooting FAQ.
 - [docs/decisions.md](docs/decisions.md) covers why the library is built this way, what was considered instead, the edge cases it handles, and the ceilings it still has.

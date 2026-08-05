@@ -6,7 +6,7 @@ A configurable, exportable drawing canvas for Android, built entirely with Jetpa
 
 ## Documentation
 
-- **[API reference](features.md)**: every composable, every state property, tools, controls, colours, backgrounds, export, rotation, and the limits.
+- **[Full documentation](documentation.md)**: concepts, a step by step integration, every composable and state property, export, rotation, the public API reference, and a troubleshooting FAQ.
 - **[Design decisions](decisions.md)**: why the eraser is an element rather than white paint, why fills persist as a recipe, how rotation behaves, and what can still break.
 - **[Project README](https://github.com/RotemBar18/EZCanvas)**: screenshots, project structure, and the feature list.
 
@@ -58,7 +58,7 @@ state.shareAsPng(context)
 state.shareAsPng(context, transparentBackground = true)
 ```
 
-See the [API reference](features.md) for everything else.
+See the [full documentation](documentation.md) for everything else.
 
 ## Requirements
 

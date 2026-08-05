@@ -1,6 +1,6 @@
 # Design decisions
 
-Why EZCanvas is built the way it is. [features.md](features.md) covers what the API does; this
+Why EZCanvas is built the way it is. [documentation.md](documentation.md) covers what the API does; this
 covers why, what was considered instead, and where the edges are.
 
 ## Scope
