@@ -22,6 +22,10 @@ screen, so it caps itself at 300dp and scrolls inside that. Raise or lower the c
 `maxHeight`. On a short screen, which in practice means landscape, it drops to a single scrolling
 row about 90dp tall, because stacking there would leave nothing to draw on.
 
+## Demo video
+
+[EZCanvas-Explainer.mp4](docs/vids/EZCanvas-Explainer.mp4) is a four minute walkthrough: the ten tools, configuring what your users get, the two composable integration, export and rotation, and the architecture behind it.
+
 ## Screenshots
 
 | Canvas | Configure tools | Examples |

@@ -10,3 +10,7 @@ captures
 
 # Build output from every module, not just the root project.
 build/
+
+# Explainer source decks. The rendered video in docs/vids is what ships.
+/EZCanvas-Explainer.pptx
+/docs/vids/*.ppsx
