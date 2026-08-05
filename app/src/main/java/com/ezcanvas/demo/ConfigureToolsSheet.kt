@@ -61,7 +61,7 @@ private val ControlChips: List<Triple<ToolbarControl, String, Grp>> = listOf(
 )
 
 /**
- * "Configure tools" — toggles which tools and controls the library [com.ezcanvas.EzToolbar]
+ * "Configure tools" toggles which tools and controls the library [com.ezcanvas.EzToolbar]
  * renders. The toolbar itself is the library's; this sheet just decides what it shows.
  */
 @OptIn(ExperimentalMaterial3Api::class)

@@ -6,14 +6,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -46,7 +42,7 @@ internal fun NeonArtExample(onBack: () -> Unit) = ExampleScaffold(
     background = NeonInk,
 ) {
     val state = rememberEzCanvasState(
-        tool = Tool.NEON,
+        tool = Tool.Neon,
         strokeColor = NeonPalette.first(),
         strokeWidthPx = 12f,
         backgroundColor = Color(0xFF0F172A),
@@ -74,18 +70,16 @@ internal fun NeonArtExample(onBack: () -> Unit) = ExampleScaffold(
             outlineVariant = Color(0xFF2C3A57),
         ),
     ) {
-        ToolbarArea {
-            EzToolbar(
-                state,
-                enabledTools = setOf(Tool.NEON),
-                controls = setOf(
-                    ToolbarControl.ColorPicker, ToolbarControl.StrokeWidth,
-                    ToolbarControl.Undo, ToolbarControl.Clear, ToolbarControl.Export,
-                ),
-                palette = NeonPalette,
-                allowCustomColor = false,
-            )
-        }
+        EzToolbar(
+            state,
+            enabledTools = setOf(Tool.Neon),
+            controls = setOf(
+                ToolbarControl.ColorPicker, ToolbarControl.StrokeWidth,
+                ToolbarControl.Undo, ToolbarControl.Clear, ToolbarControl.Export,
+            ),
+            palette = NeonPalette,
+            allowCustomColor = false,
+        )
     }
 }
 

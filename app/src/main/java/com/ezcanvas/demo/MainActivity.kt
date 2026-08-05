@@ -31,7 +31,7 @@ private enum class Screen { Canvas, Examples }
 
 /**
  * The canvas is the home screen; Examples is reached from the canvas top bar (the hi-fi has no
- * bottom nav — the bottom of the canvas is the color pill).
+ * bottom nav, because the bottom of the canvas is the color pill).
  */
 @Composable
 private fun AppRoot() {

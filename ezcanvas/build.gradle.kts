@@ -12,7 +12,6 @@ android {
 
     defaultConfig {
         minSdk = 28
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -52,7 +51,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
-    testImplementation(libs.junit)
 }
 
 // Publication consumed by JitPack:
@@ -66,7 +64,7 @@ dependencies {
 // This value is therefore the release version, and the git tag has to carry the same name. Tagging
 // "v1.0.0" while publishing "1.0.0" makes JitPack report the tag build as failed, because it finds
 // nothing under the version it was asked for. Bump this and the tag together.
-val releaseVersion = "1.0.1"
+val releaseVersion = "1.1.0"
 
 afterEvaluate {
     publishing {

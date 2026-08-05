@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 }
 
 // module build.gradle.kts
-implementation("com.github.RotemBar18:EZCanvas:1.0.1")
+implementation("com.github.RotemBar18:EZCanvas:1.1.0")
 ```
 
 Requires Jetpack Compose, Kotlin 2.2, AGP 9.1, `compileSdk 36`, `minSdk 28`. The library depends only on Compose and Material 3. No DI, no networking.
@@ -48,7 +48,7 @@ Column {
 ```kotlin
 EzToolbar(
     state,
-    enabledTools = setOf(Tool.PEN, Tool.ERASER),
+    enabledTools = setOf(Tool.Pen, Tool.Eraser),
     controls = setOf(ToolbarControl.ColorPicker, ToolbarControl.Undo, ToolbarControl.Clear),
 )
 ```
@@ -67,7 +67,7 @@ Set the starting tool, colour, size, background and name here rather than assign
 
 ```kotlin
 val state = rememberEzCanvasState(
-    tool = Tool.NEON,
+    tool = Tool.Neon,
     strokeColor = Color(0xFF06B6D4),
     strokeWidthPx = 12f,
     backgroundColor = Color(0xFF0F172A),
@@ -104,15 +104,21 @@ A complete toolbar. It renders only what you enable, and every control brings it
 | `modifier` | `Modifier` | `Modifier` | Layout modifier |
 | `controls` | `Set<ToolbarControl>` | `DefaultToolbarControls` | Which controls appear |
 | `enabledTools` | `Set<Tool>` | all tools | Which tools appear in the selector |
-| `palette` | `List<Color>` | `DefaultSwatches` | Stroke colour swatches |
-| `backgroundPalette` | `List<Color>` | `DefaultBackgrounds` | Background colour swatches |
+| `palette` | `List<Color>` | `DefaultPalette` | Stroke colour swatches |
+| `backgroundPalette` | `List<Color>` | `DefaultBackgroundPalette` | Background colour swatches |
 | `allowCustomColor` | `Boolean` | `true` | Adds a palette button that opens a full colour chooser |
 | `onExport` | `(() -> Unit)?` | `null` | Overrides the export button, which otherwise shares a PNG |
+| `maxHeight` | `Dp` | `300.dp` | How tall the stacked layout may grow before it scrolls inside itself |
 
-The toolbar lays its sections out in a `Column` with no internal scrolling, so put it in a scrollable container or a bottom sheet when you enable many controls.
+The bar fits the space it is given, so it needs no scrolling wrapper around it.
+
+With every control enabled its sections stack to roughly 700dp. A phone screen is around 870dp tall in portrait and 390dp in landscape, so an unbounded bar would leave little or nothing to draw on. Two things prevent that. It caps itself at `maxHeight` and scrolls inside that cap. And on a screen shorter than 500dp, which in practice means a landscape phone or a small split-screen window, it switches to a single horizontally scrolling row about 90dp tall.
+
+That means the layout below behaves on a phone in both orientations, with no wrapper and nothing to tune:
 
 ```kotlin
-Box(Modifier.heightIn(max = 300.dp).verticalScroll(rememberScrollState())) {
+Column(Modifier.fillMaxSize()) {
+    EzCanvas(state, Modifier.weight(1f).fillMaxWidth())
     EzToolbar(state)
 }
 ```
@@ -134,7 +140,7 @@ Everything the toolbar does goes through these members, so anything the toolbar 
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `tool` | `Tool` | `PEN` | The active tool |
+| `tool` | `Tool` | `Pen` | The active tool |
 | `strokeColor` | `Color` | Black | Colour of the next stroke, or of the selected text |
 | `strokeWidthPx` | `Float` | `10f` | Stroke thickness in pixels, and the text size source |
 | `strokeAlpha` | `Float` | `1f` | Opacity, 0 to 1 |
@@ -186,34 +192,34 @@ state.maxUndoSteps = 10  // a short history
 
 | Enum | Values |
 |---|---|
-| `Tool` | `PEN`, `MARKER`, `NEON`, `CALLIGRAPHY`, `ERASER`, `LINE`, `SQUARE`, `CIRCLE`, `BUCKET`, `TEXT` |
+| `Tool` | `Pen`, `Marker`, `Neon`, `Calligraphy`, `Eraser`, `Line`, `Square`, `Circle`, `Bucket`, `Text` |
 | `LineStyle` | `Solid`, `Dotted`, `Dashed`, `DashDot` |
 | `BackgroundPattern` | `None`, `Grid`, `Dots`, `Lined` |
 | `ShapeKind` | `Line`, `Square`, `Circle` |
 | `ToolbarControl` | see [Toolbar controls](#toolbar-controls) |
 
-Helpers: `Tool.isShape` is true for the shape tools, and `Tool.shapeKind()` returns the matching `ShapeKind` or null.
+Helpers: `Tool.isShape` is true for the shape tools, and `Tool.shapeKind` returns the matching `ShapeKind` or null.
 
 ## Tools
 
 | Tool | Behaviour |
 |---|---|
-| `PEN` | Opaque round stroke. Honours `lineStyle` |
-| `MARKER` | Translucent flat stroke |
-| `NEON` | Glowing stroke, a soft halo behind a bright core |
-| `CALLIGRAPHY` | Thicker flat stroke |
-| `ERASER` | Clears strokes and leaves the background intact |
-| `LINE` | Straight line between press and release |
-| `SQUARE` | Perfect square, locked to 1:1 |
-| `CIRCLE` | Perfect circle, locked to 1:1 |
-| `BUCKET` | Flood fills the enclosed region under the tap |
-| `TEXT` | Places, selects and moves text |
+| `Pen` | Opaque round stroke. Honours `lineStyle` |
+| `Marker` | Translucent flat stroke |
+| `Neon` | Glowing stroke, a soft halo behind a bright core |
+| `Calligraphy` | Thicker flat stroke |
+| `Eraser` | Clears strokes and leaves the background intact |
+| `Line` | Straight line between press and release |
+| `Square` | Perfect square, locked to 1:1 |
+| `Circle` | Perfect circle, locked to 1:1 |
+| `Bucket` | Flood fills the enclosed region under the tap |
+| `Text` | Places, selects and moves text |
 
-Drag to draw. Tap to place a dot with any brush, or to erase a spot with the eraser. Shapes rubber band between press and release, and a drag too small to see is discarded rather than committed as an invisible mark. Shapes are outlines, so use `BUCKET` to fill one.
+Drag to draw. Tap to place a dot with any brush, or to erase a spot with the eraser. Shapes rubber band between press and release, and a drag too small to see is discarded rather than committed as an invisible mark. Shapes are outlines, so use `Bucket` to fill one.
 
 ## Text
 
-With `TEXT` selected:
+With `Text` selected:
 
 - Tapping empty canvas opens a dialog and places what you type.
 - Tapping existing text selects it. The toolbar then shows that text's own colour, opacity and size.
@@ -225,7 +231,7 @@ The font size comes from `strokeWidthPx`, so the text tool needs no extra contro
 ```kotlin
 EzToolbar(
     state,
-    enabledTools = setOf(Tool.PEN, Tool.CIRCLE, Tool.TEXT),
+    enabledTools = setOf(Tool.Pen, Tool.Circle, Tool.Text),
     controls = setOf(
         ToolbarControl.ToolSelector, ToolbarControl.ColorPicker,
         ToolbarControl.StrokeWidth, ToolbarControl.Undo, ToolbarControl.Clear,
@@ -256,12 +262,12 @@ Use `state.hasSelection` to react to a selection, and `state.clearSelection()` t
 
 ```kotlin
 // A signature pad
-EzToolbar(state, enabledTools = setOf(Tool.PEN), controls = setOf(ToolbarControl.Clear, ToolbarControl.Export))
+EzToolbar(state, enabledTools = setOf(Tool.Pen), controls = setOf(ToolbarControl.Clear, ToolbarControl.Export))
 
 // A shape editor with no freehand at all
 EzToolbar(
     state,
-    enabledTools = setOf(Tool.LINE, Tool.SQUARE, Tool.CIRCLE, Tool.BUCKET),
+    enabledTools = setOf(Tool.Line, Tool.Square, Tool.Circle, Tool.Bucket),
     controls = setOf(
         ToolbarControl.ToolSelector, ToolbarControl.ColorPicker,
         ToolbarControl.Style, ToolbarControl.Undo, ToolbarControl.Clear,
@@ -271,7 +277,7 @@ EzToolbar(
 
 ## Colours
 
-Pass your own swatches for strokes and backgrounds. `DefaultSwatches` and `DefaultBackgrounds` are the built in lists.
+Pass your own swatches for strokes and backgrounds. `DefaultPalette` and `DefaultBackgroundPalette` are the built in lists.
 
 ```kotlin
 EzToolbar(
@@ -355,8 +361,8 @@ Export is PNG only. That is deliberate: PNG is lossless and supports transparenc
 
 ```kotlin
 Row {
-    IconButton(onClick = { state.tool = Tool.PEN }) { Icon(Icons.Filled.Edit, "Pen") }
-    IconButton(onClick = { state.tool = Tool.ERASER }) { Icon(Icons.Filled.Clear, "Eraser") }
+    IconButton(onClick = { state.tool = Tool.Pen }) { Icon(Icons.Filled.Edit, "Pen") }
+    IconButton(onClick = { state.tool = Tool.Eraser }) { Icon(Icons.Filled.Clear, "Eraser") }
     IconButton(onClick = { state.undo() }, enabled = state.canUndo) {
         Icon(Icons.AutoMirrored.Filled.Undo, "Undo")
     }
@@ -372,7 +378,7 @@ Everything the toolbar does is available this way, and nothing about it is priva
 
 | What you want | What you set or call |
 |---|---|
-| Pick a tool | `state.tool = Tool.PEN` |
+| Pick a tool | `state.tool = Tool.Pen` |
 | Pick a colour | `state.strokeColor = Color.Red` |
 | Brush and eraser size | `state.strokeWidthPx`, `state.eraserWidthPx` |
 | Opacity | `state.strokeAlpha` |
@@ -384,7 +390,7 @@ Everything the toolbar does is available this way, and nothing about it is priva
 | Text selection | `state.hasSelection`, `state.clearSelection()` |
 | Name and export | `state.drawingName`, `state.shareAsPng(context)` |
 
-The text dialog still appears when a user taps with `TEXT` selected, because it belongs to the canvas rather than the toolbar.
+The text dialog still appears when a user taps with `Text` selected, because it belongs to the canvas rather than the toolbar.
 
 ## Theming
 
@@ -398,7 +404,7 @@ MaterialTheme(
         onSurface = Color(0xFFE7EAF3),
     ),
 ) {
-    EzToolbar(state, enabledTools = setOf(Tool.NEON))
+    EzToolbar(state, enabledTools = setOf(Tool.Neon))
 }
 ```
 
@@ -408,7 +414,9 @@ The toolbar uses `primary` for the active tool and selected values, `surfaceVari
 
 The drawing and the settings survive configuration changes and process recreation through `rememberSaveable`. No work is needed on your side.
 
-When the canvas changes shape, for example on rotation, the drawing keeps its real size and stroke widths and is shifted so its centre matches the new canvas centre. Nothing is scaled or distorted. A drawing larger than the new canvas therefore runs past the edge, and rotating back brings it into view.
+When the canvas changes shape, for example on rotation, the drawing keeps its real size and stroke widths and is shifted so its centre matches the new canvas centre. Nothing is scaled or distorted. The shift is then clamped so the drawing stays in view: one that fits the new canvas is kept fully inside it, and one too large to fit is kept covering it. Rotating back restores the original framing.
+
+A layout pass that leaves the canvas with no width or height is ignored rather than treated as a resize. A `Column` gives a weighted child no space at all once its siblings stop fitting, which a cramped landscape layout can do, and acting on that would move the drawing and then leave it there.
 
 Bucket fills survive too, by a different route. A filled region has no compact geometric form, so its pixels would be megabytes, far past the size limit on saved state. Only the recipe is stored, the point that was tapped and the colour, and the fill is replayed once the canvas has a size again. Each one is replayed against the elements below it, so a stroke drawn after the fill does not change the region it covered.
 
@@ -427,7 +435,16 @@ Every drawn item is a `CanvasElement` held in one ordered list:
 
 That single model powers undo and redo, export and rotation restore, so adding a new element type never touches that machinery. Freehand points are `StrokePoint(x, y)` in canvas pixels.
 
-The library is one module, `:ezcanvas`, holding the canvas, the toolbar, the element model, flood fill, export and sharing.
+The library is one module, `:ezcanvas`, in four layers that depend in one direction only.
+
+| Package | Holds | Depends on |
+|---|---|---|
+| `model` | The element types and the enums | nothing |
+| `render` | Turning elements into pixels, on screen and into a `Bitmap` | `model` |
+| `ui` | The dialog widgets | nothing |
+| `com.ezcanvas` | The public API: canvas, toolbar, state, fill, export, sharing | all of the above |
+
+`render` is the reason the screen and an exported PNG match. Compose cannot draw into a `Bitmap` outside a composition, so there are two renderers by necessity, but every paint decision they share, dash intervals, stroke caps, marker translucency and the background pattern geometry, is defined once in `render/StrokeStyles.kt` and read by both.
 
 ## Limits
 

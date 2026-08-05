@@ -30,7 +30,7 @@ object EzColors {
     val SectionLabel = Color(0xFFB4B0A6)
 }
 
-/** Brush swatches — the mock's accents first, then a wider set so the row scrolls. */
+/** Brush swatches: the mock's accents first, then a wider set so the row scrolls. */
 val BrushSwatches: List<Color> = listOf(
     EzColors.Primary, EzColors.Coral, EzColors.Teal, EzColors.Amber, EzColors.Ink,
     Color(0xFFF43F5E), Color(0xFF06B6D4), Color(0xFF22C55E),

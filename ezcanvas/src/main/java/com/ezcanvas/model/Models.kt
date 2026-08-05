@@ -8,20 +8,20 @@ import androidx.compose.ui.graphics.ImageBitmap
  * The drawing tool currently selected on an [com.ezcanvas.EzCanvasState].
  *
  * Freehand brushes & eraser produce a [StrokeElement]; the shape tools
- * ([LINE], [SQUARE], [CIRCLE]) produce a [ShapeElement].
+ * ([Line], [Square], [Circle]) produce a [ShapeElement].
  *
- * - [PEN] opaque round stroke (honours the selected [LineStyle])
- * - [MARKER] translucent flat stroke (always solid)
- * - [NEON] glowing stroke (always solid)
- * - [CALLIGRAPHY] thicker flat stroke (always solid)
- * - [ERASER] removes previously drawn elements
- * - [LINE] straight line between two points
- * - [SQUARE] perfect 1:1 square (drag to size)
- * - [CIRCLE] perfect 1:1 circle (drag to size)
- * - [BUCKET] flood-fills the region under the tap with the selected color (paint bucket)
- * - [TEXT] places typed text, and selects or drags text that is already there
+ * - [Pen] opaque round stroke (honours the selected [LineStyle])
+ * - [Marker] translucent flat stroke (always solid)
+ * - [Neon] glowing stroke (always solid)
+ * - [Calligraphy] thicker flat stroke (always solid)
+ * - [Eraser] removes previously drawn elements
+ * - [Line] straight line between two points
+ * - [Square] perfect 1:1 square (drag to size)
+ * - [Circle] perfect 1:1 circle (drag to size)
+ * - [Bucket] flood-fills the region under the tap with the selected color (paint bucket)
+ * - [Text] places typed text, and selects or drags text that is already there
  */
-enum class Tool { PEN, MARKER, NEON, CALLIGRAPHY, ERASER, LINE, SQUARE, CIRCLE, BUCKET, TEXT }
+enum class Tool { Pen, Marker, Neon, Calligraphy, Eraser, Line, Square, Circle, Bucket, Text }
 
 /** Background grid drawn behind the strokes. */
 enum class BackgroundPattern { None, Grid, Dots, Lined }
@@ -33,15 +33,15 @@ enum class LineStyle { Solid, Dotted, Dashed, DashDot }
 enum class ShapeKind { Line, Square, Circle }
 
 /** The shape a shape-tool draws, or `null` for the freehand/eraser tools. */
-fun Tool.shapeKind(): ShapeKind? = when (this) {
-    Tool.LINE -> ShapeKind.Line
-    Tool.SQUARE -> ShapeKind.Square
-    Tool.CIRCLE -> ShapeKind.Circle
+val Tool.shapeKind: ShapeKind? get() = when (this) {
+    Tool.Line -> ShapeKind.Line
+    Tool.Square -> ShapeKind.Square
+    Tool.Circle -> ShapeKind.Circle
     else -> null
 }
 
 /** True when this tool draws a [ShapeElement] rather than a freehand [StrokeElement]. */
-val Tool.isShape: Boolean get() = shapeKind() != null
+val Tool.isShape: Boolean get() = shapeKind != null
 
 /** A single point in a freehand stroke, in canvas pixels. */
 data class StrokePoint(val x: Float, val y: Float)
@@ -49,7 +49,7 @@ data class StrokePoint(val x: Float, val y: Float)
 /**
  * One drawn thing on the canvas: either a freehand [StrokeElement] or a [ShapeElement].
  *
- * A single ordered list of these powers undo/redo, save/restore and export — adding a new
+ * A single ordered list of these powers undo/redo, save/restore and export, so adding a new
  * element type never touches that machinery.
  */
 sealed interface CanvasElement {
@@ -77,7 +77,7 @@ data class StrokeElement(
 /**
  * A shape defined by two points: where the drag started ([start]) and ended ([end]).
  * [ShapeKind.Square] and [ShapeKind.Circle] are constrained to 1:1 before commit, so for them
- * `end` already encodes an equal-sided box. Shapes are outlines; use [Tool.BUCKET] to fill them.
+ * `end` already encodes an equal-sided box. Shapes are outlines; use [Tool.Bucket] to fill them.
  */
 data class ShapeElement(
     val kind: ShapeKind,

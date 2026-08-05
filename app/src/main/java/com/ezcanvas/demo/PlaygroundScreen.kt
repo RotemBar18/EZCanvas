@@ -11,33 +11,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -70,10 +64,9 @@ import com.ezcanvas.shareAsPng
 import com.ezcanvas.demo.ui.BackgroundSwatches
 import com.ezcanvas.demo.ui.BrushSwatches
 import com.ezcanvas.demo.ui.EzColors
-import com.ezcanvas.model.Tool
 
 /**
- * Hi-fi Screen 1 — the canvas. The whole control surface is the library's [EzToolbar], hosted in
+ * Hi-fi Screen 1, the canvas. The whole control surface is the library's [EzToolbar], hosted in
  * a slide-up bottom sheet; the app only provides branding (top bar) and decides which tools and
  * controls are enabled. That config is what the gear's Configure sheet toggles.
  */
@@ -105,8 +98,6 @@ fun PlaygroundScreen(onOpenExamples: () -> Unit) {
         sheetContent = {
             Column(
                 Modifier
-                    .heightIn(max = 520.dp)
-                    .verticalScroll(rememberScrollState())
                     .navigationBarsPadding(),
             ) {
                 EzToolbar(

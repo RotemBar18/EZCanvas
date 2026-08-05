@@ -23,11 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -71,7 +68,7 @@ internal fun PhotoMarkupExample(onBack: () -> Unit) = ExampleScaffold(
     background = EzColors.AppBg,
 ) {
     val state = rememberEzCanvasState(
-        tool = Tool.CIRCLE,
+        tool = Tool.Circle,
         strokeColor = MarkupPalette.first(),
         strokeWidthPx = 6f,
         drawingName = "markup",
@@ -112,7 +109,7 @@ internal fun PhotoMarkupExample(onBack: () -> Unit) = ExampleScaffold(
             ) {
                 EzToolbar(
                     state,
-                    enabledTools = setOf(Tool.PEN, Tool.MARKER, Tool.LINE, Tool.CIRCLE, Tool.SQUARE, Tool.TEXT),
+                    enabledTools = setOf(Tool.Pen, Tool.Marker, Tool.Line, Tool.Circle, Tool.Square, Tool.Text),
                     controls = setOf(
                         ToolbarControl.ToolSelector, ToolbarControl.ColorPicker, ToolbarControl.StrokeWidth,
                         ToolbarControl.Style, ToolbarControl.Undo, ToolbarControl.Clear,

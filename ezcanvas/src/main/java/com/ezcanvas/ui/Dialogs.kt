@@ -1,4 +1,4 @@
-package com.ezcanvas
+package com.ezcanvas.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -13,7 +13,7 @@ private const val FILL_TOLERANCE = 60
 
 /**
  * Flood-fill the region under [seed] with the current [EzCanvasState.strokeColor], producing a
- * [FillElement] (a cropped bitmap of just the filled pixels) ready to commit — or null if the
+ * [FillElement] (a cropped bitmap of just the filled pixels) ready to commit, or null if the
  * canvas isn't laid out, the seed already matches the fill color, or nothing was filled.
  *
  * Runs synchronously on the caller's thread; for very large canvases this is a brief hitch.
@@ -92,8 +92,8 @@ internal class FloodRegion(
     val maxY: Int,
 )
 
-/** Summed absolute per-channel (A,R,G,B) difference of two ARGB ints — cheap color distance. */
-internal fun colorDistance(a: Int, b: Int): Int {
+/** Summed absolute per-channel (A,R,G,B) difference of two ARGB ints, as a cheap color distance. */
+private fun colorDistance(a: Int, b: Int): Int {
     val da = abs(((a ushr 24) and 0xFF) - ((b ushr 24) and 0xFF))
     val dr = abs(((a ushr 16) and 0xFF) - ((b ushr 16) and 0xFF))
     val dg = abs(((a ushr 8) and 0xFF) - ((b ushr 8) and 0xFF))
@@ -106,7 +106,7 @@ internal fun colorDistance(a: Int, b: Int): Int {
  * Fills 4-connected pixels within [tolerance] of the seed's color; returns the covered region,
  * or null if the seed itself doesn't match.
  */
-internal fun scanlineFlood(
+private fun scanlineFlood(
     pixels: IntArray,
     w: Int,
     h: Int,

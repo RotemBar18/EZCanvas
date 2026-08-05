@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
@@ -20,11 +19,12 @@ import com.ezcanvas.model.CanvasElement
 import com.ezcanvas.model.FillElement
 import com.ezcanvas.model.LineStyle
 import com.ezcanvas.model.ShapeElement
-import com.ezcanvas.model.ShapeKind
 import com.ezcanvas.model.StrokeElement
 import com.ezcanvas.model.StrokePoint
 import com.ezcanvas.model.TextElement
 import com.ezcanvas.model.Tool
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Hoisted state holder for an [EzCanvas] (and an [EzToolbar] bound to the same canvas).
@@ -44,21 +44,9 @@ class EzCanvasState {
     internal var widthPx: Int = 0
     internal var heightPx: Int = 0
 
-    /**
-     * Bumped whenever an element changes. [EzCanvas] reads it while drawing, which guarantees a
-     * repaint for edits made in place, such as recolouring the selected text. Replacing an item in
-     * the list alone does not reliably invalidate the draw phase.
-     */
-    internal var revision by mutableIntStateOf(0)
-        private set
-
-    private fun invalidateCanvas() {
-        revision++
-    }
-
     // --- Drawing settings -------------------------------------------------
 
-    var tool by mutableStateOf(Tool.PEN)
+    var tool by mutableStateOf(Tool.Pen)
     var eraserWidthPx by mutableFloatStateOf(40f)
 
     // Colour, size and opacity apply to the selected text the moment they are set, so a toolbar
@@ -138,7 +126,6 @@ class EzCanvasState {
         redoStack.clear()
         // Drawing again is the point of no return for an undo of clear.
         clearedElements = null
-        invalidateCanvas()
     }
 
     fun undo() {
@@ -149,19 +136,16 @@ class EzCanvasState {
             elements.addAll(cleared)
             clearedElements = null
             undoFloor = 0
-            invalidateCanvas()
             return
         }
         if (elements.size > undoFloor) {
             redoStack.add(elements.removeAt(elements.lastIndex))
-            invalidateCanvas()
         }
     }
 
     fun redo() {
         if (redoStack.isNotEmpty()) {
             elements.add(redoStack.removeAt(redoStack.lastIndex))
-            invalidateCanvas()
         }
     }
 
@@ -209,7 +193,6 @@ class EzCanvasState {
         )
         if (updated != element) {
             elements[index] = updated
-            invalidateCanvas()
         }
     }
 
@@ -218,7 +201,6 @@ class EzCanvasState {
         val index = selectedIndex ?: return
         val element = elements.getOrNull(index) as? TextElement ?: return
         elements[index] = element.copy(topLeft = element.topLeft + delta)
-        invalidateCanvas()
     }
 
     /** The box every element sits inside, in canvas pixels, or null when nothing is drawn. */
@@ -258,7 +240,6 @@ class EzCanvasState {
         redoStack.clear()
         undoFloor = 0
         selectedIndex = null
-        invalidateCanvas()
     }
 
     /**
@@ -266,30 +247,39 @@ class EzCanvasState {
      *
      * Coordinates are stored in canvas pixels, so without this a drawing would stay pinned to the
      * top left when the canvas changes shape, for example on rotation. The drawing keeps its real
-     * size and stroke widths, and is shifted so its centre matches the new canvas centre. A
-     * drawing wider or taller than the new canvas therefore runs past the edge, which is the
-     * trade for never distorting or shrinking someone's work.
+     * size and stroke widths, and is shifted so its centre matches the new canvas centre, then
+     * pulled back far enough to stay in view. Work is never distorted or scaled to fit.
      */
     internal fun remapTo(newWidth: Int, newHeight: Int) {
         val oldWidth = widthPx
         val oldHeight = heightPx
         if (oldWidth <= 0 || oldHeight <= 0) return
+        // A collapsed layout pass is not a resize. A host whose canvas is briefly squeezed to
+        // nothing, which a Column does to a weighted child when its siblings no longer fit, would
+        // otherwise have the drawing shifted by half the old canvas and left there: the recorded
+        // size is then zero, so the pass that restores a real size is refused by the guard above.
+        if (newWidth <= 0 || newHeight <= 0) return
         if (oldWidth == newWidth && oldHeight == newHeight) return
         if (elements.isEmpty() && redoStack.isEmpty()) return
 
         var shiftX = (newWidth - oldWidth) / 2f
         var shiftY = (newHeight - oldHeight) / 2f
 
-        // Centring alone pushes work out of sight when the canvas gets much shorter, which is
-        // what rotating into landscape does. If the drawing still fits, nudge it back in.
+        // Centring alone pushes work out of sight when the canvas gets much shorter, which is what
+        // rotating into landscape does. Two limits hold it in view: one puts the drawing's leading
+        // edge at the canvas edge, the other its trailing edge. A drawing smaller than the canvas
+        // is kept fully inside; one larger than the canvas is kept covering it. Which limit is the
+        // lower of the two flips as the drawing outgrows the canvas, so they are sorted rather
+        // than assumed, and the clamp then reads the same in both cases.
         val bounds = drawingBounds()
         if (bounds != null) {
-            if (bounds.width <= newWidth) {
-                shiftX = shiftX.coerceIn(-bounds.left, newWidth - bounds.right)
-            }
-            if (bounds.height <= newHeight) {
-                shiftY = shiftY.coerceIn(-bounds.top, newHeight - bounds.bottom)
-            }
+            val leadingX = -bounds.left
+            val trailingX = newWidth - bounds.right
+            shiftX = shiftX.coerceIn(min(leadingX, trailingX), max(leadingX, trailingX))
+
+            val leadingY = -bounds.top
+            val trailingY = newHeight - bounds.bottom
+            shiftY = shiftY.coerceIn(min(leadingY, trailingY), max(leadingY, trailingY))
         }
         if (shiftX == 0f && shiftY == 0f) return
 
@@ -320,7 +310,6 @@ class EzCanvasState {
 
         for (i in elements.indices) elements[i] = remap(elements[i])
         for (i in redoStack.indices) redoStack[i] = remap(redoStack[i])
-        invalidateCanvas()
     }
 
     companion object {
@@ -396,7 +385,7 @@ class EzCanvasState {
  */
 @Composable
 fun rememberEzCanvasState(
-    tool: Tool = Tool.PEN,
+    tool: Tool = Tool.Pen,
     strokeColor: Color = Color.Black,
     strokeWidthPx: Float = 10f,
     strokeAlpha: Float = 1f,
@@ -417,115 +406,4 @@ fun rememberEzCanvasState(
         it.backgroundPattern = backgroundPattern
         it.drawingName = drawingName
     }
-}
-
-// --- Element (de)serialization for the Saver ------------------------------
-// Each element is a FloatArray whose first slot tags the type, so new element types are
-// additive. Colors are stored losslessly via Float.fromBits / toRawBits.
-//
-// Stroke: [TYPE_STROKE, colorBits, width, alpha, styleOrdinal, toolOrdinal, x0,y0, x1,y1, ...]
-// Shape:  [TYPE_SHAPE,  colorBits, width, alpha, styleOrdinal, kindOrdinal, sx, sy, ex, ey]
-// Text:   [TYPE_TEXT,   colorBits, sizePx, alpha, textIndex, 0, x, y]
-// Fill:   [TYPE_FILL,   colorBits, 0, alpha, 0, 0, seedX, seedY]
-//
-// A fill stores only its recipe, the seed and the colour, because the filled pixels are far too
-// large for saved state. It is replayed from those after the canvas is laid out again.
-
-internal const val SAVE_VERSION = 4
-private const val TYPE_STROKE = 0f
-private const val TYPE_SHAPE = 1f
-private const val TYPE_TEXT = 2f
-private const val TYPE_FILL = 3f
-
-/** Toolbar size slider values are stroke widths, so text scales them up to a readable font size. */
-internal const val TextSizeFactor = 2.5f
-
-internal fun encodeElement(element: CanvasElement, textIndex: Int): FloatArray = when (element) {
-    is StrokeElement -> FloatArray(6 + element.points.size * 2).also { serializedData ->
-        serializedData[0] = TYPE_STROKE
-        serializedData[1] = Float.fromBits(element.color.toArgb())
-        serializedData[2] = element.widthPx
-        serializedData[3] = element.alpha
-        serializedData[4] = element.style.ordinal.toFloat()
-        serializedData[5] = element.tool.ordinal.toFloat()
-        var dataIndex = 6
-        for (point in element.points) {
-            serializedData[dataIndex++] = point.x
-            serializedData[dataIndex++] = point.y
-        }
-    }
-
-    is ShapeElement -> floatArrayOf(
-        TYPE_SHAPE,
-        Float.fromBits(element.color.toArgb()),
-        element.widthPx,
-        element.alpha,
-        element.style.ordinal.toFloat(),
-        element.kind.ordinal.toFloat(),
-        element.start.x, element.start.y, element.end.x, element.end.y,
-    )
-
-    is TextElement -> floatArrayOf(
-        TYPE_TEXT,
-        Float.fromBits(element.color.toArgb()),
-        element.sizePx,
-        element.alpha,
-        textIndex.toFloat(),
-        0f,
-        element.topLeft.x, element.topLeft.y,
-    )
-
-    is FillElement -> floatArrayOf(
-        TYPE_FILL,
-        Float.fromBits(element.color.toArgb()),
-        0f,
-        element.alpha,
-        0f,
-        0f,
-        element.seed.x, element.seed.y,
-    )
-}
-
-internal fun decodeElement(serializedData: FloatArray, texts: List<String>): CanvasElement = if (serializedData[0] == TYPE_FILL) {
-    // Pending: the pixels are replayed from the seed once the canvas has a size again.
-    FillElement(
-        seed = Offset(serializedData[6], serializedData[7]),
-        color = Color(serializedData[1].toRawBits()),
-        image = null,
-        topLeft = Offset.Zero,
-        alpha = serializedData[3],
-    )
-} else if (serializedData[0] == TYPE_TEXT) {
-    TextElement(
-        text = texts.getOrElse(serializedData[4].toInt()) { "" },
-        topLeft = Offset(serializedData[6], serializedData[7]),
-        sizePx = serializedData[2],
-        color = Color(serializedData[1].toRawBits()),
-        alpha = serializedData[3],
-    )
-} else if (serializedData[0] == TYPE_SHAPE) {
-    ShapeElement(
-        kind = ShapeKind.entries[serializedData[5].toInt()],
-        start = Offset(serializedData[6], serializedData[7]),
-        end = Offset(serializedData[8], serializedData[9]),
-        color = Color(serializedData[1].toRawBits()),
-        widthPx = serializedData[2],
-        alpha = serializedData[3],
-        style = LineStyle.entries[serializedData[4].toInt()],
-    )
-} else {
-    val points = ArrayList<StrokePoint>((serializedData.size - 6) / 2)
-    var dataIndex = 6
-    while (dataIndex + 1 < serializedData.size) {
-        points.add(StrokePoint(serializedData[dataIndex], serializedData[dataIndex + 1]))
-        dataIndex += 2
-    }
-    StrokeElement(
-        points = points,
-        tool = Tool.entries[serializedData[5].toInt()],
-        color = Color(serializedData[1].toRawBits()),
-        widthPx = serializedData[2],
-        alpha = serializedData[3],
-        style = LineStyle.entries[serializedData[4].toInt()],
-    )
 }

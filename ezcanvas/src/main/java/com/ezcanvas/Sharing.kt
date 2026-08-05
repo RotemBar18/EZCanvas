@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 
 /*
  * One-call helpers so consumers get export, share and image-background with no plumbing of
- * their own — no FileProvider setup, no bitmap I/O, no image decoding.
+ * their own: no FileProvider setup, no bitmap I/O, no image decoding.
  */
 
 /**

@@ -41,8 +41,9 @@ whether the bar sits in a bottom sheet, a side panel, or nowhere.
 
 ### The toolbar is configured, not styled
 
-`EzToolbar` takes sets: which tools, which controls, which colours. It exposes no sizing, spacing or
-shape parameters, and takes every colour from `MaterialTheme`.
+`EzToolbar` takes sets: which tools, which controls, which colours. It exposes no spacing or shape
+parameters, and takes every colour from `MaterialTheme`. The one size it accepts is `maxHeight`,
+which is not a matter of taste: it decides how much of the screen is left to draw on.
 
 *Considered instead:* style parameters for button size, corner radius and so on.
 
@@ -50,6 +51,23 @@ That road has no end, and a half configurable component is worse than a fixed on
 is better: the state is public, so an app that needs a different look builds its own UI against it
 and skips the bar. Theming still works, because wrapping the bar in a different `MaterialTheme` is
 enough to restyle it.
+
+### The toolbar fits itself to the screen
+
+With every control enabled the bar's sections stack to roughly 700dp. A phone is about 870dp tall in
+portrait and 390dp in landscape, so a bar that simply took its natural height would leave a sliver of
+canvas in portrait and nothing at all in landscape. It therefore caps itself at `maxHeight` and
+scrolls inside that, and on a screen shorter than 500dp it lays its sections out in one horizontal
+scrolling row about 90dp tall instead of stacking them.
+
+*Considered instead:* documenting the height and letting each app wrap the bar in a bounded scrolling
+box.
+
+That is what the library did first, and every example ended up with the same
+`heightIn(max = ...).verticalScroll(...)` around the bar. A workaround that every caller has to write
+identically is a missing feature. It also failed quietly: the wrapper made the bar scroll, but the
+canvas above it was still squeezed to almost nothing in landscape, so a drawing that survived
+rotation correctly still looked like it had vanished.
 
 ### The eraser is an element, not white paint
 
@@ -90,9 +108,13 @@ centre matches the new centre, and it is not resized.
 
 *Considered instead:* scaling to fit the new canvas.
 
-Scaling changes stroke widths and shrinks the user's work to fit a shape they did not choose. A
-drawing wider than the new canvas now runs past the edge and comes back when the device is rotated
-back, which is recoverable. Silently shrinking someone's drawing is not.
+Scaling changes stroke widths and shrinks the user's work to fit a shape they did not choose.
+Silently shrinking someone's drawing is worse than showing part of it.
+
+Centring alone is not enough. Rotating into landscape can make the canvas far shorter than the
+drawing is tall, and a plain centring shift then shunts the whole thing out of sight. So the shift
+is clamped: a drawing that fits the new canvas is kept fully inside it, and a drawing too large to
+fit is kept covering it. Either way something is always on screen.
 
 ### Undo is capped by steps, never by deleting
 
@@ -145,7 +167,8 @@ interval calculation, keep them aligned, and the risk is called out here so it s
 | Selecting text while the brush is a different colour | Reads the text's own colour into the toolbar, and does not repaint the text |
 | Switching tool while text is selected | Drops the selection, because it only means something for the text tool |
 | Undo after a clear | Restores the whole drawing in one step. Drawing again makes the clear permanent |
-| Rotating with a drawing larger than the new canvas | Runs past the edge at full size, and returns on rotating back |
+| Rotating with a drawing larger than the new canvas | Stays at full size and keeps covering the canvas, so it is never shifted out of sight |
+| A layout pass that leaves the canvas no height | Ignored, and not recorded as the canvas size, so the pass that restores a real size still has a size to remap from |
 | Restoring saved state written by an older version | Starts fresh, rather than reading rows that have a different shape |
 | A file name typed by a user | Sanitised, path separators stripped, `.png` appended |
 | Exporting before the canvas has been laid out | Returns null rather than crashing |

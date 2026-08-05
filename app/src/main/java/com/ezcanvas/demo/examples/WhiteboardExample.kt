@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -20,9 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -60,7 +55,7 @@ internal fun WhiteboardExample(onBack: () -> Unit) = ExampleScaffold(
     background = EzColors.AppBg,
 ) {
     val state = rememberEzCanvasState(
-        tool = Tool.MARKER,
+        tool = Tool.Marker,
         strokeWidthPx = 10f,
         backgroundPattern = BackgroundPattern.Grid,
     )
@@ -77,7 +72,7 @@ internal fun WhiteboardExample(onBack: () -> Unit) = ExampleScaffold(
     ) {
         Column(Modifier.weight(1f)) {
             Text(
-                "LESSON 4 · FRACTIONS",
+                "LESSON 4  /  FRACTIONS",
                 style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.sp),
                 color = EzColors.SectionLabel,
             )
@@ -135,14 +130,11 @@ internal fun WhiteboardExample(onBack: () -> Unit) = ExampleScaffold(
             .padding(horizontal = 20.dp)
             .padding(bottom = 12.dp)
             .clip(RoundedCornerShape(14.dp))
-            .border(1.dp, EzColors.Divider, RoundedCornerShape(14.dp))
-            // Bounded and scrollable so a tall toolbar never pushes the board off screen.
-            .heightIn(max = 230.dp)
-            .verticalScroll(rememberScrollState()),
+            .border(1.dp, EzColors.Divider, RoundedCornerShape(14.dp)),
     ) {
         EzToolbar(
             state,
-            enabledTools = setOf(Tool.MARKER, Tool.PEN, Tool.LINE, Tool.SQUARE, Tool.CIRCLE, Tool.ERASER),
+            enabledTools = setOf(Tool.Marker, Tool.Pen, Tool.Line, Tool.Square, Tool.Circle, Tool.Eraser),
             controls = setOf(
                 ToolbarControl.ToolSelector, ToolbarControl.ColorPicker, ToolbarControl.StrokeWidth,
                 ToolbarControl.Style, ToolbarControl.Undo, ToolbarControl.Redo,

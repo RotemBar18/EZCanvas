@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +14,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -37,15 +41,12 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.CropSquare
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,7 +68,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ezcanvas.model.BackgroundPattern
 import com.ezcanvas.model.LineStyle
+import androidx.compose.ui.platform.LocalConfiguration
 import com.ezcanvas.model.Tool
+import com.ezcanvas.ui.DialogAction
+import com.ezcanvas.ui.EzDialog
+import com.ezcanvas.ui.EzPromptDialog
+import com.ezcanvas.render.dashIntervals
 import com.ezcanvas.model.isShape
 
 /**
@@ -84,14 +90,14 @@ enum class ToolbarControl {
 val DefaultToolbarControls: Set<ToolbarControl> = ToolbarControl.entries.toSet()
 
 /** Default stroke-color swatches. */
-val DefaultSwatches: List<Color> = listOf(
+val DefaultPalette: List<Color> = listOf(
     Color.Black, Color.White,
     Color(0xFF14B8A6), Color(0xFF06B6D4), Color(0xFFF43F5E),
     Color(0xFFF59E0B), Color(0xFF6366F1), Color(0xFF22C55E),
 )
 
 /** Default background swatches. */
-val DefaultBackgrounds: List<Color> = listOf(
+val DefaultBackgroundPalette: List<Color> = listOf(
     Color.White, Color(0xFFF4F7FB), Color(0xFFFFFDE7), Color(0xFF0F172A), Color(0xFF0B2A4A),
 )
 
@@ -103,9 +109,15 @@ val DefaultBackgrounds: List<Color> = listOf(
  * Set [allowCustomColor] to false to lock users to the [palette] you supply. Leave it true to add
  * a palette button that opens a full color chooser.
  *
- * Export works out of the box by sharing a PNG. Pass [onExport] to override it. The bar lays its
- * sections in a [Column] with no internal scroll, so place it in a scrollable container or a
- * bottom sheet when many controls are enabled.
+ * Export works out of the box by sharing a PNG. Pass [onExport] to override it.
+ *
+ * The bar fits the space it is given, so it never needs a scrolling wrapper around it. With every
+ * control enabled its sections stack to roughly 700dp, which would swallow a phone screen, so two
+ * things keep it in check. It caps itself at [maxHeight] and scrolls inside that. And on a short
+ * screen, which in practice means landscape, it drops to a single scrolling row about 90dp tall,
+ * because stacking there would leave no room to draw.
+ *
+ * @param maxHeight the tallest the stacked layout may grow before it scrolls inside itself.
  */
 @Composable
 fun EzToolbar(
@@ -113,10 +125,11 @@ fun EzToolbar(
     modifier: Modifier = Modifier,
     controls: Set<ToolbarControl> = DefaultToolbarControls,
     enabledTools: Set<Tool> = Tool.entries.toSet(),
-    palette: List<Color> = DefaultSwatches,
-    backgroundPalette: List<Color> = DefaultBackgrounds,
+    palette: List<Color> = DefaultPalette,
+    backgroundPalette: List<Color> = DefaultBackgroundPalette,
     allowCustomColor: Boolean = true,
     onExport: (() -> Unit)? = null,
+    maxHeight: Dp = 300.dp,
 ) {
     val context = LocalContext.current
     val pickImage = rememberBackgroundImagePicker(state)
@@ -126,15 +139,17 @@ fun EzToolbar(
     var pickingBackground by remember { mutableStateOf(false) }
     var renaming by remember { mutableStateOf(false) }
 
+    // A landscape phone is around 390dp tall. Stacking sections there leaves nothing to draw on,
+    // so the bar lays out sideways instead. The screen is the right thing to measure: the height
+    // handed to the bar is often unbounded, because a Column gives the canvas the weight.
+    val compact = LocalConfiguration.current.screenHeightDp < CompactScreenHeightDp
+
     Surface(color = MaterialTheme.colorScheme.surface, modifier = modifier.fillMaxWidth()) {
-        Column(
-            Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
-        ) {
+        CompositionLocalProvider(LocalCompactToolbar provides compact) {
+            ToolbarLayout(compact, maxHeight) {
             if (ToolbarControl.Rename in controls) {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
+                    RenameWidth
                         .clip(RoundedCornerShape(12.dp))
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { renaming = true }
@@ -198,7 +213,7 @@ fun EzToolbar(
                 }
             }
 
-            if (ToolbarControl.Style in controls && (state.tool == Tool.PEN || state.tool.isShape)) {
+            if (ToolbarControl.Style in controls && (state.tool == Tool.Pen || state.tool.isShape)) {
                 Section("Line style") {
                     ScrollRow {
                         LineStyle.entries.forEach { style ->
@@ -281,6 +296,7 @@ fun EzToolbar(
                         )
                     }
                 }
+            }
             }
         }
     }
@@ -392,10 +408,51 @@ private fun Section(label: String, content: @Composable () -> Unit) {
     }
 }
 
+/** Below this screen height the bar lays out sideways. Covers landscape phones, not small tablets. */
+private const val CompactScreenHeightDp = 500
+
+/**
+ * True while the bar is in its sideways layout. The section composables read it rather than take a
+ * parameter each, because it changes only two things: nothing may scroll horizontally inside a bar
+ * that already scrolls that way, and nothing may ask to fill an unbounded width.
+ */
+private val LocalCompactToolbar = compositionLocalOf { false }
+
+/** Sections stack when there is room, and run in one scrolling line when there is not. */
+@Composable
+private fun ToolbarLayout(compact: Boolean, maxHeight: Dp, content: @Composable () -> Unit) {
+    if (compact) {
+        Row(
+            Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) { content() }
+    } else {
+        Column(
+            Modifier
+                .heightIn(max = maxHeight)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) { content() }
+    }
+}
+
+/** Sliders need a definite width; sideways there is no parent width to fill. */
+private val SliderWidth: Modifier
+    @Composable get() = if (LocalCompactToolbar.current) Modifier.width(190.dp) else Modifier.fillMaxWidth()
+
+private val RenameWidth: Modifier
+    @Composable get() = if (LocalCompactToolbar.current) Modifier.width(150.dp) else Modifier.fillMaxWidth()
+
 @Composable
 private fun ScrollRow(content: @Composable () -> Unit) {
+    // Sideways, the whole bar is already one scrolling row, so these must not scroll again.
+    val scroll = if (LocalCompactToolbar.current) Modifier else Modifier.horizontalScroll(rememberScrollState())
     Row(
-        Modifier.horizontalScroll(rememberScrollState()),
+        scroll,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) { content() }
@@ -520,7 +577,11 @@ private fun ValueSlider(
     onChange: (Float) -> Unit,
 ) {
     val scheme = MaterialTheme.colorScheme
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Row(
+        SliderWidth,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
         Text(
             label,
             style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
@@ -578,16 +639,16 @@ private fun PillButton(
 // --- Tool presentation ------------------------------------------------------
 
 private fun Tool.icon(): ImageVector = when (this) {
-    Tool.PEN -> Icons.Filled.Edit
-    Tool.MARKER -> Icons.Filled.Brush
-    Tool.NEON -> Icons.Filled.AutoAwesome
-    Tool.CALLIGRAPHY -> Icons.Filled.Gesture
-    Tool.ERASER -> Icons.AutoMirrored.Filled.Backspace
-    Tool.LINE -> Icons.Filled.HorizontalRule
-    Tool.SQUARE -> Icons.Outlined.CropSquare
-    Tool.CIRCLE -> Icons.Outlined.Circle
-    Tool.BUCKET -> Icons.Filled.FormatColorFill
-    Tool.TEXT -> Icons.Filled.TextFields
+    Tool.Pen -> Icons.Filled.Edit
+    Tool.Marker -> Icons.Filled.Brush
+    Tool.Neon -> Icons.Filled.AutoAwesome
+    Tool.Calligraphy -> Icons.Filled.Gesture
+    Tool.Eraser -> Icons.AutoMirrored.Filled.Backspace
+    Tool.Line -> Icons.Filled.HorizontalRule
+    Tool.Square -> Icons.Outlined.CropSquare
+    Tool.Circle -> Icons.Outlined.Circle
+    Tool.Bucket -> Icons.Filled.FormatColorFill
+    Tool.Text -> Icons.Filled.TextFields
 }
 
 private fun Tool.label(): String = name.lowercase().replaceFirstChar { it.uppercase() }

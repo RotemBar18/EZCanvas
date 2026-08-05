@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -64,7 +63,6 @@ internal fun DrawingGameExample(onBack: () -> Unit) = ExampleScaffold(
     var secondsLeft by remember { mutableIntStateOf(RoundSeconds) }
     val word = Words[round % Words.size]
 
-
     // Restart the clock whenever a new round begins.
     LaunchedEffect(round) {
         secondsLeft = RoundSeconds
@@ -76,39 +74,36 @@ internal fun DrawingGameExample(onBack: () -> Unit) = ExampleScaffold(
 
     val outOfTime = secondsLeft == 0
 
-    Column(
+    // Round, word and timer share one row. Stacked, they cost about 60dp more, which is the
+    // difference between a usable board and no board at all on a landscape phone.
+    Row(
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
             Text(
                 "ROUND ${round + 1}",
                 style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.sp),
                 color = EzColors.SectionLabel,
-                modifier = Modifier.weight(1f),
             )
-            Box(
-                Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(if (outOfTime) EzColors.Coral else EzColors.ChipBg)
-                    .padding(horizontal = 14.dp, vertical = 7.dp),
-            ) {
-                Text(
-                    if (outOfTime) "TIME" else "0:%02d".format(secondsLeft),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (outOfTime) EzColors.Surface else EzColors.Ink,
-                )
-            }
-        }
-
-        Column {
-            Text("Your word", style = MaterialTheme.typography.bodySmall, color = EzColors.Subtle)
             Text(
                 word,
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold, letterSpacing = 2.sp),
                 color = EzColors.Ink,
+            )
+        }
+        Box(
+            Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (outOfTime) EzColors.Coral else EzColors.ChipBg)
+                .padding(horizontal = 14.dp, vertical = 7.dp),
+        ) {
+            Text(
+                if (outOfTime) "TIME" else "0:%02d".format(secondsLeft),
+                style = MaterialTheme.typography.labelLarge,
+                color = if (outOfTime) EzColors.Surface else EzColors.Ink,
             )
         }
     }
@@ -129,13 +124,13 @@ internal fun DrawingGameExample(onBack: () -> Unit) = ExampleScaffold(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+            .padding(horizontal = 20.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // Four colors, undo and clear. Nothing to read, nothing to configure.
         EzToolbar(
             state,
-            enabledTools = setOf(Tool.PEN),
+            enabledTools = setOf(Tool.Pen),
             controls = setOf(ToolbarControl.ColorPicker, ToolbarControl.Undo, ToolbarControl.Clear),
             palette = GamePalette,
             allowCustomColor = false,

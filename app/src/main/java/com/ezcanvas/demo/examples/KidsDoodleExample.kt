@@ -1,16 +1,12 @@
 package com.ezcanvas.demo.examples
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -61,15 +57,13 @@ internal fun KidsDoodleExample(onBack: () -> Unit) = ExampleScaffold(
             .border(2.dp, Color(0xFFEFE7C4), RoundedCornerShape(20.dp)),
     )
 
-    ToolbarArea {
-        EzToolbar(
-            state,
-            enabledTools = setOf(Tool.PEN, Tool.MARKER, Tool.BUCKET, Tool.ERASER),
-            controls = setOf(ToolbarControl.ToolSelector, ToolbarControl.ColorPicker, ToolbarControl.Clear),
-            palette = KidsPalette,
-            allowCustomColor = false,
-        )
-    }
+    EzToolbar(
+        state,
+        enabledTools = setOf(Tool.Pen, Tool.Marker, Tool.Bucket, Tool.Eraser),
+        controls = setOf(ToolbarControl.ToolSelector, ToolbarControl.ColorPicker, ToolbarControl.Clear),
+        palette = KidsPalette,
+        allowCustomColor = false,
+    )
 }
 
 /** Gallery card art: bright overlapping scribbles. */
