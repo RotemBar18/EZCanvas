@@ -14,3 +14,6 @@ build/
 # Explainer source decks. The rendered video in docs/vids is what ships.
 /EZCanvas-Explainer.pptx
 /docs/vids/*.ppsx
+
+# Personal prep notes, not part of the project.
+/VIVA-PREP.md
